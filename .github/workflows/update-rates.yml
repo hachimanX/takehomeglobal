@@ -1,0 +1,29 @@
+name: Daily Currency Rates Sync
+
+on:
+  schedule:
+    # Run every day at 04:00 UTC
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-rates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch latest ECB rates from Frankfurter API
+        run: |
+          mkdir -p public
+          curl -s https://api.frankfurter.dev/v1/latest?base=USD > public/rates.json
+
+      - name: Commit and push if updated
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/rates.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update daily exchange rates [skip ci]" && git push)
