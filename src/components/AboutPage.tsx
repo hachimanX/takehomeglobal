@@ -1,5 +1,6 @@
 import React from 'react';
-import { ShieldCheck, Database, Lock, CheckCircle2, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Database, Lock, CheckCircle2 } from 'lucide-react';
+import { SITE_CONFIG } from '../config';
 
 interface AboutPageProps {
   onNavigateHome: () => void;
@@ -11,7 +12,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateHome }) => {
       {/* Back button */}
       <button
         onClick={onNavigateHome}
-        className="inline-flex items-center gap-2 text-xs font-semibold text-indigo-400 hover:text-indigo-300 mb-8 transition-colors"
+        className="inline-flex items-center gap-2 text-xs font-semibold text-indigo-400 hover:text-indigo-300 mb-8 transition-colors cursor-pointer"
       >
         <span>← Back to Calculator</span>
       </button>
@@ -23,10 +24,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateHome }) => {
           <span>Independent & Transparent</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
-          About TaxAtlas
+          About {SITE_CONFIG.brandName}
         </h1>
         <p className="text-base sm:text-lg text-slate-400 leading-relaxed">
-          A reference-grade global tax comparison tool designed to provide clarity on international take-home pay, social security burdens, and real purchasing power across the world’s major economies.
+          A reference-grade global take-home pay and tax comparison platform designed to provide clarity on international net income, social security obligations, and real purchasing power across 35+ economies and all 50 US states.
         </p>
       </div>
 
@@ -36,7 +37,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateHome }) => {
           <Database className="w-6 h-6 text-indigo-400 mb-3" />
           <h2 className="text-base font-bold text-white mb-1.5">Official Sourcing</h2>
           <p className="text-xs text-slate-400 leading-relaxed">
-            Every bracket, threshold, and contribution schedule is verified directly from official fiscal agencies and ministries of finance.
+            Every statutory bracket, deduction, and contribution ceiling is verified directly from official fiscal authorities including the IRS, HMRC, FBR, BZSt, NTA, and OECD.
           </p>
         </div>
 
@@ -44,67 +45,56 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateHome }) => {
           <Lock className="w-6 h-6 text-emerald-400 mb-3" />
           <h2 className="text-base font-bold text-white mb-1.5">Zero Data Storage</h2>
           <p className="text-xs text-slate-400 leading-relaxed">
-            100% client-side computing. We do not require accounts, log your entries, or transmit your salary numbers over the network.
+            100% client-side computing. We do not require accounts, log your entries, or transmit your salary inputs over the network.
           </p>
         </div>
 
         <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
-          <CheckCircle2 className="w-6 h-6 text-cyan-400 mb-3" />
-          <h2 className="text-base font-bold text-white mb-1.5">Real Net Economics</h2>
+          <CheckCircle2 className="w-6 h-6 text-purple-400 mb-3" />
+          <h2 className="text-base font-bold text-white mb-1.5">Live Forex Calibration</h2>
           <p className="text-xs text-slate-400 leading-relaxed">
-            We model both national taxes and mandatory social security/healthcare contributions, as well as benchmarked city living costs.
+            Foreign exchange conversion rates synchronize daily with the European Central Bank (ECB) via the public Frankfurter feed.
           </p>
         </div>
       </div>
 
-      {/* Narrative Sections */}
-      <div className="space-y-8 text-sm leading-relaxed border-t border-white/[0.08] pt-8">
-        <div>
-          <h2 className="text-xl font-bold text-white mb-3">Our Mission</h2>
-          <p className="text-slate-400 mb-3">
-            In an increasingly globalized world driven by remote employment, digital nomadism, and international corporate mobility, headline tax rates are deeply misleading. A country advertising a "20% flat tax" might impose 35% mandatory social charges, while a country with progressive 40% brackets might offer generous personal allowances that result in lower effective taxation.
-          </p>
-          <p className="text-slate-400">
-            TaxAtlas was created to cut through marketing noise and provide workers, founders, and HR professionals with an unvarnished, mathematical view of true take-home compensation and purchasing power.
-          </p>
-        </div>
-
-        <div>
-          <h2 className="text-xl font-bold text-white mb-3">Primary Data Sources</h2>
-          <p className="text-slate-400 mb-3">
-            Our data engine incorporates statutory figures from leading tax authorities worldwide:
-          </p>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono text-slate-300">
-            <li className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.04]">🇺🇸 US: Internal Revenue Service (IRS)</li>
-            <li className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.04]">🇬🇧 UK: HM Revenue & Customs (HMRC)</li>
-            <li className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.04]">🇩🇪 Germany: Bundesfinanzministerium (BMF)</li>
-            <li className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.04]">🇨🇦 Canada: Canada Revenue Agency (CRA)</li>
-            <li className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.04]">🇦🇺 Australia: Australian Taxation Office (ATO)</li>
-            <li className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.04]">🇪🇸 Spain: Agencia Tributaria</li>
-            <li className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.04]">🇵🇹 Portugal: Autoridade Tributária e Aduaneira</li>
-            <li className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.04]">🌐 OECD: Tax Database & Policy Statistics</li>
-          </ul>
-        </div>
-
-        <div>
-          <h2 className="text-xl font-bold text-white mb-3">Editorial Independence & Affiliate Disclosure</h2>
-          <p className="text-slate-400 leading-relaxed">
-            TaxAtlas is an independently operated web resource. To support ongoing maintenance, server bandwidth, and regular statutory research, we partner with reputable international service providers (such as Wise, Deel, and StartFleet). If you choose to register through our partner links, we may receive compensation at zero additional cost to you. This commercial relationship never influences our tax engine formulas or algorithmic country rankings.
-          </p>
-        </div>
+      {/* Methodology Narrative */}
+      <div className="space-y-6 text-xs sm:text-sm leading-relaxed mb-12 bg-white/[0.02] p-8 rounded-3xl border border-white/[0.06]">
+        <h2 className="text-xl font-bold text-white">Calculation Methodology</h2>
+        <p>
+          Unlike simple marginal bracket tables that calculate isolated tax percentages, {SITE_CONFIG.brandName} models the true sequential tax waterfall experienced by salaried individuals and contractors:
+        </p>
+        <ol className="list-decimal list-inside space-y-2 text-slate-400">
+          <li>
+            <strong className="text-slate-200">Gross Baseline Normalization:</strong> Your entered salary is pegged to your chosen base currency and converted to local statutory units using live daily ECB reference rates.
+          </li>
+          <li>
+            <strong className="text-slate-200">Standard Allowances & Slabs:</strong> Official personal allowances (e.g. US Standard Deduction of $16,100, UK Personal Allowance of £12,570, German Grundfreibetrag, Pakistan ₨600k slab, China ¥60k deduction) are subtracted prior to progressive bracket evaluation.
+          </li>
+          <li>
+            <strong className="text-slate-200">Progressive Income Tax Calculation:</strong> Tax is applied incrementally to each income bracket chunk at the statutory marginal percentage.
+          </li>
+          <li>
+            <strong className="text-slate-200">Mandatory Social Insurance Deductions:</strong> State pension, health insurance, and unemployment contributions (e.g. US FICA/Medicare, UK National Insurance, German Sozialversicherung, EOBI) are computed using exact statutory caps and exemption thresholds.
+          </li>
+          <li>
+            <strong className="text-slate-200">Sub-National Regional Levies:</strong> Where selected, US state income taxes across all 50 states, Canadian provincial taxes, and Japanese local inhabitant taxes are calculated in tandem.
+          </li>
+          <li>
+            <strong className="text-slate-200">Real Purchasing Power Estimator:</strong> Benchmarked cost-of-living indices (Numbeo city averages for single persons excluding rent) are deducted from annual net pay to reveal true disposable spending power.
+          </li>
+        </ol>
       </div>
 
-      {/* Bottom CTA */}
-      <div className="mt-12 p-8 rounded-3xl bg-gradient-to-r from-indigo-900/30 to-purple-900/30 border border-indigo-500/30 text-center">
-        <h3 className="text-xl font-bold text-white mb-2">Ready to run your salary numbers?</h3>
-        <p className="text-xs text-slate-400 mb-5">Compare 30+ global destinations in under 5 seconds.</p>
-        <button
-          onClick={onNavigateHome}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-all shadow-lg shadow-indigo-600/30"
-        >
-          <span>Open Tax Calculator</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </button>
+      {/* Educational & Legal Disclaimer */}
+      <div className="p-6 rounded-3xl bg-amber-500/5 border border-amber-500/20 text-xs leading-relaxed space-y-2">
+        <h3 className="font-bold text-amber-300 text-sm">Educational & Compliance Notice</h3>
+        <p className="text-slate-300">
+          {SITE_CONFIG.legalDisclaimer}
+        </p>
+        <p className="text-slate-400">
+          Individual situations involve deductions, treaty benefits, foreign earned income exclusions, marital statuses, and local credits that require personalized guidance from a certified public accountant (CPA), chartered tax advisor (CTA), or enrolled agent.
+        </p>
       </div>
     </div>
   );

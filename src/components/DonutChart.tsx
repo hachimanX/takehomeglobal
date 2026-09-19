@@ -1,24 +1,42 @@
 import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import type { CountryCalculationResult } from '../types';
 
 ChartJS.register(ArcElement, Tooltip);
 
 interface DonutChartProps {
-  items: {
+  items?: {
     label: string;
     amountUSD: number;
     color: string;
   }[];
+  result?: CountryCalculationResult;
+  baseCurrency?: string;
 }
 
-export const DonutChart: React.FC<DonutChartProps> = ({ items }) => {
+export const DonutChart: React.FC<DonutChartProps> = ({ items, result, baseCurrency }) => {
+  const chartItems =
+    items ||
+    (result
+      ? [
+          { label: 'Net Take-Home', amountUSD: result.netUSD, color: '#10B981' },
+          { label: 'Income Tax', amountUSD: result.incomeTaxUSD, color: '#6366F1' },
+          ...(result.stateTaxUSD > 0
+            ? [{ label: 'State / Local Tax', amountUSD: result.stateTaxUSD, color: '#8B5CF6' }]
+            : []),
+          ...(result.socialContributionsUSD > 0
+            ? [{ label: 'Social Security / NI', amountUSD: result.socialContributionsUSD, color: '#F59E0B' }]
+            : []),
+        ]
+      : []);
+
   const data = {
-    labels: items.map((i) => i.label),
+    labels: chartItems.map((i) => i.label),
     datasets: [
       {
-        data: items.map((i) => i.amountUSD),
-        backgroundColor: items.map((i) => i.color),
+        data: chartItems.map((i) => i.amountUSD),
+        backgroundColor: chartItems.map((i) => i.color),
         borderColor: '#12141e',
         borderWidth: 2,
         hoverOffset: 4,
@@ -45,16 +63,16 @@ export const DonutChart: React.FC<DonutChartProps> = ({ items }) => {
           label: function (context: any) {
             const label = context.label || '';
             const value = context.parsed || 0;
-            return ` ${label}: $${Math.round(value).toLocaleString()}`;
+            return ` ${label}: ${baseCurrency === 'USD' || !baseCurrency ? '$' : baseCurrency + ' '}${Math.round(value).toLocaleString()}`;
           },
         },
       },
     },
-    cutout: '75%',
+    cutout: '72%',
   };
 
   return (
-    <div className="relative w-28 h-28 flex items-center justify-center">
+    <div className="relative w-32 h-32 flex items-center justify-center">
       <Doughnut data={data} options={options} />
     </div>
   );

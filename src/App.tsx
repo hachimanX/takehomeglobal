@@ -13,17 +13,23 @@ import { ContactPage } from './components/ContactPage';
 import { CountryHubPage } from './components/CountryHubPage';
 import { GuidesIndexPage } from './components/GuidesIndexPage';
 import { ArticleView } from './components/ArticleView';
+import { EmbedModal } from './components/EmbedModal';
 import { Footer } from './components/Footer';
 
 import { COUNTRIES } from './data/taxData';
 import { DEFAULT_EXCHANGE_RATES, getExchangeRates } from './data/exchangeRates';
 import { calculateCountryTax } from './engine/calculator';
 import { ARTICLES } from './data/articlesData';
+import { SITE_CONFIG } from './config';
+import type { LanguageCode } from './types';
+import { BookOpen, ArrowRight } from 'lucide-react';
 
 export const App: React.FC = () => {
   // Navigation Routing state
   const [activeView, setActiveView] = useState<string>('home'); // home | about | advertise | contact | country | guides | article
   const [viewParam, setViewParam] = useState<string>(''); // countryId or article slug
+  const [language, setLanguage] = useState<LanguageCode>('en');
+  const [isEmbedOpen, setIsEmbedOpen] = useState<boolean>(false);
 
   // Calculator Parameters
   const [grossIncome, setGrossIncome] = useState<number>(100000);
@@ -34,7 +40,7 @@ export const App: React.FC = () => {
     'germany',
     'uae',
     'singapore',
-    'portugal',
+    'pakistan',
   ]);
   const [selectedSubRegions, setSelectedSubRegions] = useState<Record<string, string>>({
     usa: 'California',
@@ -47,6 +53,18 @@ export const App: React.FC = () => {
   // Initialize from URL query params or hash
   useEffect(() => {
     try {
+      // Check for affiliate cloaked redirects
+      const searchParams = new URLSearchParams(window.location.search);
+      const cloakedTarget = searchParams.get('go') || window.location.hash.replace('#/go/', '').replace('#go/', '');
+      if (cloakedTarget === 'startfleet') {
+        window.location.href = SITE_CONFIG.affiliates.startfleet.destinationUrl;
+        return;
+      }
+      if (cloakedTarget === 'wise') {
+        window.location.href = SITE_CONFIG.affiliates.wise.destinationUrl;
+        return;
+      }
+
       const hash = window.location.hash.replace('#', '');
       if (hash.startsWith('/tax-calculator/')) {
         const countryId = hash.replace('/tax-calculator/', '').replace('/', '');
@@ -66,14 +84,13 @@ export const App: React.FC = () => {
         setActiveView('advertise');
       } else if (hash === 'contact') {
         setActiveView('contact');
-      } else if (hash === 'guides') {
+      } else if (hash === 'guides' || hash === 'guides-index') {
         setActiveView('guides');
       }
 
-      const params = new URLSearchParams(window.location.search);
-      const inc = params.get('income');
-      const curr = params.get('currency');
-      const countries = params.get('countries');
+      const inc = searchParams.get('income');
+      const curr = searchParams.get('currency');
+      const countries = searchParams.get('countries');
 
       if (inc) setGrossIncome(Math.max(0, parseInt(inc, 10)));
       if (curr) setBaseCurrency(curr);
@@ -117,6 +134,13 @@ export const App: React.FC = () => {
       window.location.hash = `/tax-calculator/${param}/`;
     } else if (view === 'article' && param) {
       window.location.hash = `/tax-guides/${param}/`;
+    } else if (view === 'guide' && param) {
+      setActiveView('article');
+      setViewParam(param);
+      window.location.hash = `/tax-guides/${param}/`;
+    } else if (view === 'guides-index') {
+      setActiveView('guides');
+      window.location.hash = 'guides';
     } else if (view !== 'home') {
       window.location.hash = view;
     } else {
@@ -180,13 +204,16 @@ export const App: React.FC = () => {
       {/* Top Floating Newsletter Bar */}
       <TopAnnouncementBar />
 
-      {/* Main Navbar with Dropdowns */}
+      {/* Main Navbar with Dropdowns & Language Switcher */}
       <Navbar
         selectedCurrency={baseCurrency}
         onSelectCurrency={setBaseCurrency}
         activeView={activeView}
         onNavigate={handleNavigate}
         onFocusCalculator={handleFocusCalculator}
+        language={language}
+        onLanguageChange={setLanguage}
+        onOpenEmbed={() => setIsEmbedOpen(true)}
       />
 
       <main className="flex-grow">
@@ -204,23 +231,70 @@ export const App: React.FC = () => {
                 onRemoveCountry={handleRemoveCountry}
                 selectedSubRegions={selectedSubRegions}
                 onSubRegionChange={handleSubRegionChange}
+                onOpenEmbed={() => setIsEmbedOpen(true)}
+                language={language}
               />
             </div>
 
+            {/* Direct Relocation Arbitrage Card (Strictly primary vs destination) */}
             <ArbitrageCard
               results={comparisonResults}
               baseCurrency={baseCurrency}
             />
 
+            {/* Side-by-Side Ranked Comparison Cards */}
             <ComparisonCards
               results={comparisonResults}
               baseCurrency={baseCurrency}
+              onRemoveCountry={handleRemoveCountry}
+              onNavigateCountry={(id) => handleNavigate('country', id)}
             />
+
+            {/* Homepage Deep-Link Navigation Grid (Click Depth < 3) */}
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <div className="p-6 sm:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.08]">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <BookOpen className="w-4 h-4 text-indigo-400" />
+                    <h3 className="text-base sm:text-lg font-bold text-white">
+                      Popular Tax Guides & Country Studies
+                    </h3>
+                  </div>
+                  <button
+                    onClick={() => handleNavigate('guides-index')}
+                    className="text-xs text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1 cursor-pointer"
+                  >
+                    <span>View all guides</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {ARTICLES.slice(0, 4).map((art) => (
+                    <button
+                      key={art.slug}
+                      onClick={() => handleNavigate('article', art.slug)}
+                      className="p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] text-left transition-all group cursor-pointer"
+                    >
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 block mb-1">
+                        {art.category}
+                      </span>
+                      <h4 className="text-xs font-bold text-white group-hover:text-indigo-300 transition-colors line-clamp-2">
+                        {art.title}
+                      </h4>
+                      <span className="text-[11px] text-slate-500 mt-2 block">
+                        {art.readTime}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </section>
 
             {/* Contextual Expat & Nomad Partners */}
             <AffiliateBanners />
 
-            {/* Comprehensive Matrix of all 30+ Countries */}
+            {/* Comprehensive Matrix of all 35+ Countries */}
             <GlobalExplorerTable
               countries={COUNTRIES}
               grossIncome={grossIncome}
@@ -228,9 +302,10 @@ export const App: React.FC = () => {
               exchangeRates={exchangeRates}
               selectedCountryIds={selectedCountries}
               onAddCountry={handleAddCountry}
+              onNavigateCountry={(id) => handleNavigate('country', id)}
             />
 
-            {/* Comprehensive FAQs with Schema.org format */}
+            {/* Comprehensive FAQs */}
             <FaqSection />
           </>
         )}
@@ -281,6 +356,14 @@ export const App: React.FC = () => {
           <ContactPage onNavigateHome={() => handleNavigate('home')} />
         )}
       </main>
+
+      {/* Embed Modal for Webmasters & Bloggers */}
+      <EmbedModal
+        isOpen={isEmbedOpen}
+        onClose={() => setIsEmbedOpen(false)}
+        defaultCountry={selectedCountries[0]}
+        defaultCurrency={baseCurrency}
+      />
 
       {/* Expanded Multi-Column Footer with Trust Badges */}
       <Footer onNavigate={handleNavigate} />

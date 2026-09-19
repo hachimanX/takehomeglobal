@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none">
+  <defs>
+    <linearGradient id="logo-icon-grad" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6366F1" />
+      <stop offset="50%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+    <linearGradient id="logo-arrow-grad" x1="12" y1="12" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#34D399" />
+    </linearGradient>
+  </defs>
+  <!-- Icon Mark -->
+  <rect x="2" y="4" width="40" height="40" rx="10" fill="#0F111A" stroke="url(#logo-icon-grad)" stroke-width="2" />
+  <circle cx="22" cy="24" r="12" stroke="#374151" stroke-width="1" stroke-dasharray="2 2" />
+  <path d="M14 27L19 22L24 26L30 18" stroke="url(#logo-arrow-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M26 18H30V22" stroke="url(#logo-arrow-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Wordmark -->
+  <text x="52" y="27" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="18" letter-spacing="-0.5">TakeHome</text>
+  <text x="144" y="27" fill="#10B981" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="18" letter-spacing="-0.5">Global</text>
+  <text x="52" y="39" fill="#9CA3AF" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="8.5" letter-spacing="1.2">INDEPENDENT TAX CALCULATOR</text>
+</svg>

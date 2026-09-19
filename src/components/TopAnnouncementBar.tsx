@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Check } from 'lucide-react';
+import { SITE_CONFIG } from '../config';
 
 export const TopAnnouncementBar: React.FC = () => {
   const [visible, setVisible] = useState(false);
@@ -23,6 +24,15 @@ export const TopAnnouncementBar: React.FC = () => {
     if (!email || !email.includes('@')) return;
 
     setSubmitted(true);
+
+    if (SITE_CONFIG.formspreeId) {
+      fetch(`https://formspree.io/f/${SITE_CONFIG.formspreeId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ email, source: 'top_announcement_bar', timestamp: new Date().toISOString() }),
+      }).catch((err) => console.warn('Formspree submit error:', err));
+    }
+
     try {
       // Store email in localStorage lead list
       const existing = JSON.parse(localStorage.getItem('tax_subscribers') || '[]');
@@ -34,7 +44,7 @@ export const TopAnnouncementBar: React.FC = () => {
 
     setTimeout(() => {
       handleDismiss();
-    }, 2500);
+    }, 2800);
   };
 
   if (!visible) return null;
@@ -44,11 +54,11 @@ export const TopAnnouncementBar: React.FC = () => {
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5">
         {/* Banner Tagline */}
         <div className="flex items-center gap-2 font-medium">
-          <span className="text-blue-600 font-black">■</span>
+          <span className="text-indigo-600 font-black">■</span>
           <span className="font-bold text-[#92400e]">The Tax Brief</span>
           <span className="hidden sm:inline text-slate-400">—</span>
           <span className="text-[#92400e] text-[11px] sm:text-xs">
-            Real effective rates across 111+ countries — delivered bi-weekly, 100% free.
+            2026 Global Tax Arbitrage & Expat Playbook — 100% free download.
           </span>
         </div>
 
@@ -57,34 +67,33 @@ export const TopAnnouncementBar: React.FC = () => {
           {submitted ? (
             <div className="flex items-center gap-1.5 text-emerald-800 font-semibold bg-emerald-100 px-3 py-1 rounded-md">
               <Check className="w-3.5 h-3.5 text-emerald-600" />
-              <span>You're subscribed! First brief lands shortly.</span>
+              <span>You're in! Check your inbox for the 2026 Playbook.</span>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="flex items-center gap-1.5 w-full sm:w-auto">
               <input
                 type="email"
-                placeholder="your@email.com"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
-                className="bg-white border border-[#d97706]/30 text-[#1e293b] placeholder-slate-400 text-xs px-2.5 py-1 rounded-md focus:outline-none focus:border-[#b45309] w-full sm:w-48"
+                placeholder="your@email.com"
+                className="bg-white px-2.5 py-1 text-xs rounded border border-amber-300 text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500 w-full sm:w-48"
               />
               <button
                 type="submit"
-                className="bg-[#f59e0b] hover:bg-[#d97706] text-[#78350f] hover:text-white font-bold text-xs px-3 py-1 rounded-md whitespace-nowrap transition-colors shadow-xs"
+                className="bg-[#d97706] hover:bg-[#b45309] text-white px-3 py-1 rounded font-bold text-xs transition-colors shrink-0 cursor-pointer shadow-sm"
               >
                 Get it free →
               </button>
             </form>
           )}
 
-          {/* Dismiss Button */}
           <button
             onClick={handleDismiss}
-            className="p-1 hover:bg-black/5 rounded text-slate-500 hover:text-slate-800 transition-colors ml-1"
-            title="Dismiss banner"
+            className="text-amber-800 hover:text-amber-950 p-1 transition-colors cursor-pointer"
+            title="Dismiss announcement"
           >
-            <X className="w-3.5 h-3.5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
       </div>

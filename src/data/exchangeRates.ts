@@ -13,6 +13,8 @@ export const DEFAULT_EXCHANGE_RATES: Record<string, number> = {
   INR: 83.5,
   HKD: 7.81,
   KRW: 1375.0,
+  CNY: 7.23,
+  PKR: 278.5,
   MXN: 18.2,
   BRL: 5.4,
   SEK: 10.6,
@@ -83,6 +85,8 @@ export const SUPPORTED_CURRENCIES = [
   { code: 'INR', symbol: '₹', name: 'Indian Rupee' },
   { code: 'HKD', symbol: 'HK$', name: 'Hong Kong Dollar' },
   { code: 'KRW', symbol: '₩', name: 'South Korean Won' },
+  { code: 'CNY', symbol: '¥', name: 'Chinese Yuan' },
+  { code: 'PKR', symbol: '₨', name: 'Pakistani Rupee' },
   { code: 'MXN', symbol: 'Mex$', name: 'Mexican Peso' },
   { code: 'BRL', symbol: 'R$', name: 'Brazilian Real' },
 ];

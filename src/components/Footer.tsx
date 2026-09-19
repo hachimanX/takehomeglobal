@@ -1,5 +1,6 @@
 import React from 'react';
-import { Globe } from 'lucide-react';
+import { Globe, ExternalLink } from 'lucide-react';
+import { SITE_CONFIG } from '../config';
 
 interface FooterProps {
   onNavigate: (view: string, param?: string) => void;
@@ -17,13 +18,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               onClick={() => onNavigate('home')}
               className="flex items-center gap-2 text-white font-bold text-base cursor-pointer group"
             >
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center">
                 <Globe className="w-4 h-4 text-white" />
               </div>
-              <span className="font-extrabold text-lg">TaxAtlas</span>
+              <span className="font-extrabold text-lg">{SITE_CONFIG.brandName}</span>
             </div>
             <p className="text-slate-400 leading-relaxed text-xs">
-              An independent, free global tax comparison tool covering 30+ major economies and all 50 US states — updated for the 2026 tax year.
+              An independent, free global take-home pay and tax comparison tool covering 35+ major economies and all 50 US states — updated for the {SITE_CONFIG.taxYear} tax year.
             </p>
             <div className="text-[11px] text-slate-500">
               Quietly maintained with reference-grade accuracy.
@@ -57,82 +58,109 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('country', 'canada')} className="hover:text-white transition-colors cursor-pointer">
-                  Canada Provinces
+                <button onClick={() => onNavigate('country', 'pakistan')} className="hover:text-white transition-colors cursor-pointer">
+                  Pakistan FBR Slabs & EOBI
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('country', 'portugal')} className="hover:text-white transition-colors cursor-pointer">
-                  Portugal IRS & NHR
+                <button onClick={() => onNavigate('country', 'japan')} className="hover:text-white transition-colors cursor-pointer">
+                  Japan National & Inhabitant
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('country', 'china')} className="hover:text-white transition-colors cursor-pointer">
+                  China Comprehensive IIT
                 </button>
               </li>
               <li>
                 <button onClick={() => onNavigate('country', 'uae')} className="hover:text-white transition-colors cursor-pointer">
-                  UAE 0% Expat Calculator
+                  UAE 0% Tax Calculator
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Col 2: Compare */}
+          {/* Col 2: High-Volume Comparisons */}
           <div>
             <h4 className="text-[11px] font-mono tracking-wider uppercase text-slate-200 font-bold mb-3">
-              Compare
+              Comparisons
             </h4>
             <ul className="space-y-2 text-xs text-slate-400">
               <li>
-                <button onClick={() => onNavigate('article', 'california-vs-texas')} className="hover:text-white transition-colors cursor-pointer">
-                  California vs Texas
+                <button onClick={() => onNavigate('guide', 'california-vs-texas-tax')} className="hover:text-white transition-colors cursor-pointer">
+                  California vs Texas Tax
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('article', 'usa-vs-uk')} className="hover:text-white transition-colors cursor-pointer">
-                  USA vs UK
+                <button onClick={() => onNavigate('guide', 'us-vs-uk-tax')} className="hover:text-white transition-colors cursor-pointer">
+                  US vs UK Take-Home Pay
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('article', 'no-income-tax-states-2026')} className="hover:text-white transition-colors cursor-pointer">
-                  The 9 Zero-Tax US States
+                <button onClick={() => onNavigate('guide', 'no-income-tax-states')} className="hover:text-white transition-colors cursor-pointer">
+                  9 States with No Income Tax
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('article', 'lowest-tax-countries-europe-2026')} className="hover:text-white transition-colors cursor-pointer">
-                  Lowest Tax in Europe
+                <button onClick={() => onNavigate('guide', 'europe-low-tax-countries')} className="hover:text-white transition-colors cursor-pointer">
+                  Europe Low-Tax Havens
                 </button>
               </li>
               <li>
                 <button onClick={() => onNavigate('home')} className="hover:text-white transition-colors cursor-pointer">
-                  Relocation Arbitrage Tool
+                  Dubai vs London Relocation
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('home')} className="hover:text-white transition-colors cursor-pointer">
+                  Singapore vs Switzerland
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Col 3: Tax Guides */}
+          {/* Col 3: Expat Resources & Solutions */}
           <div>
             <h4 className="text-[11px] font-mono tracking-wider uppercase text-slate-200 font-bold mb-3">
-              Tax Guides
+              Resources & Solutions
             </h4>
             <ul className="space-y-2 text-xs text-slate-400">
               <li>
-                <button onClick={() => onNavigate('guides')} className="hover:text-white transition-colors cursor-pointer">
-                  Browse All Guides & Reports
+                <button onClick={() => onNavigate('guides-index')} className="hover:text-white transition-colors cursor-pointer">
+                  Browse All Tax Guides
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('article', 'tax-freedom-day-by-country-2026')} className="hover:text-white transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('guide', 'tax-freedom-day-by-country-2026')} className="hover:text-white transition-colors cursor-pointer">
                   Tax Freedom Day 2026
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('article', 'germany-steuerklassen-2026')} className="hover:text-white transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('guide', 'germany-steuerklassen-2026')} className="hover:text-white transition-colors cursor-pointer">
                   German Steuerklassen Guide
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('article', 'hsa-401k-limits-2026')} className="hover:text-white transition-colors cursor-pointer">
-                  401(k) & HSA Contribution Limits
-                </button>
+                <a
+                  href={SITE_CONFIG.affiliates.startfleet.destinationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1"
+                >
+                  <span>Start a US Company</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href={SITE_CONFIG.affiliates.wise.destinationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-1"
+                >
+                  <span>International Banking (Wise)</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
               </li>
             </ul>
           </div>
@@ -140,7 +168,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Col 4: About & Legal */}
           <div>
             <h4 className="text-[11px] font-mono tracking-wider uppercase text-slate-200 font-bold mb-3">
-              About
+              Company
             </h4>
             <ul className="space-y-2 text-xs text-slate-400">
               <li>
@@ -150,12 +178,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li>
                 <button onClick={() => onNavigate('advertise')} className="text-amber-400 hover:text-amber-300 font-semibold transition-colors cursor-pointer">
-                  Advertise & Partnerships
+                  Advertise With Us
                 </button>
               </li>
               <li>
                 <button onClick={() => onNavigate('contact')} className="hover:text-white transition-colors cursor-pointer">
-                  Verified Tax Expert Directory
+                  Contact & CPA Partner Directory
                 </button>
               </li>
               <li>
@@ -177,7 +205,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-slate-300 font-medium">
             <span className="flex items-center gap-1.5 text-emerald-400">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Free to use</span>
+              <span>100% Free Forever</span>
             </span>
             <span className="flex items-center gap-1.5">
               <span>☆</span>
@@ -185,30 +213,30 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </span>
             <span className="flex items-center gap-1.5">
               <span>🌐</span>
-              <span>30+ countries & 50 US states</span>
+              <span>35+ countries & 50 US states</span>
             </span>
             <span className="flex items-center gap-1.5 text-indigo-300">
               <span>📈</span>
-              <span>Updated for 2026</span>
+              <span>Statutory 2026 tax rates</span>
             </span>
           </div>
 
           <div className="text-[11px] font-mono font-bold text-slate-400 uppercase">
-            Tax Engine v2.4 · 2026 Edition
+            Tax Engine v2.5 · 2026 Edition
           </div>
         </div>
 
         {/* Legal Disclaimer Box */}
         <div className="p-4 rounded-xl bg-black/40 border border-white/[0.04] text-[11px] text-slate-400 leading-relaxed">
           <p>
-            <strong className="text-slate-300">Not tax advice.</strong> Calculations and comparative models provided by TaxAtlas are estimates intended for educational, salary benchmarking, and informational purposes only. Individual circumstances, deductions, residency status, and local municipal laws vary significantly. Always verify your specific tax situation with your local revenue authority or a licensed CPA / fiscal advisor.
+            <strong className="text-slate-300">Educational Disclaimer:</strong> {SITE_CONFIG.legalDisclaimer}
           </p>
         </div>
 
         {/* Bottom Legal Copyright */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400 pt-2">
           <div>
-            &copy; {new Date().getFullYear()} TaxAtlas. All calculations run client-side. Zero personal data stored.
+            &copy; {new Date().getFullYear()} {SITE_CONFIG.brandName}. All calculations execute client-side. Zero personal or income data is stored.
           </div>
           <div className="flex items-center gap-4">
             <button onClick={() => onNavigate('about')} className="hover:text-white transition-colors cursor-pointer">

@@ -1,109 +1,103 @@
 import React from 'react';
-import { ExternalLink, Shield, Globe2, Briefcase, Building2 } from 'lucide-react';
-
-interface PartnerCard {
-  name: string;
-  tagline: string;
-  badge: string;
-  description: string;
-  link: string;
-  cta: string;
-  icon: any;
-  color: string;
-}
-
-const PARTNERS: PartnerCard[] = [
-  {
-    name: 'Wise',
-    badge: 'International Banking',
-    tagline: 'Send & receive money at the real mid-market exchange rate',
-    description: 'Avoid inflated bank markups when converting your international salary. Hold 40+ currencies with local account details in USD, EUR, GBP, AUD, and SGD.',
-    link: 'https://wise.com/?utm_source=taxatlas&utm_medium=affiliate',
-    cta: 'Open Free Wise Account →',
-    icon: Globe2,
-    color: 'from-emerald-600/20 to-teal-900/10 border-emerald-500/30 text-emerald-400',
-  },
-  {
-    name: 'Deel',
-    badge: 'Global Payroll & EOR',
-    tagline: 'Hire abroad, automate compliance, or invoice global clients',
-    description: 'The preferred infrastructure for remote workers and international teams. Handles local tax withholdings, contractor agreements, and automated invoicing in 150+ countries.',
-    link: 'https://www.deel.com/?utm_source=taxatlas&utm_medium=affiliate',
-    cta: 'Explore Deel Solutions →',
-    icon: Briefcase,
-    color: 'from-indigo-600/20 to-purple-900/10 border-indigo-500/30 text-indigo-400',
-  },
-  {
-    name: 'StartFleet',
-    badge: 'Incorporation & Residency',
-    tagline: 'Incorporate in the US, UK, or UAE with zero travel required',
-    description: 'Set up your remote company structure, obtain international bank accounts (Mercury, Brex, Wise), and optimize your global tax footprint with dedicated formation specialists.',
-    link: 'https://startfleet.io/?utm_source=taxatlas&utm_medium=partner',
-    cta: 'Start Global Company →',
-    icon: Building2,
-    color: 'from-amber-600/20 to-orange-900/10 border-amber-500/30 text-amber-400',
-  },
-];
+import { ExternalLink, Shield, Globe2, Building2 } from 'lucide-react';
+import { SITE_CONFIG } from '../config';
 
 export const AffiliateBanners: React.FC = () => {
+  const partners = [
+    {
+      name: SITE_CONFIG.affiliates.startfleet.name,
+      badge: SITE_CONFIG.affiliates.startfleet.tag,
+      headline: SITE_CONFIG.affiliates.startfleet.headline,
+      description: SITE_CONFIG.affiliates.startfleet.description,
+      link: SITE_CONFIG.affiliates.startfleet.destinationUrl,
+      cloakedDisplay: SITE_CONFIG.affiliates.startfleet.cloakedPath,
+      cta: SITE_CONFIG.affiliates.startfleet.ctaText,
+      icon: Building2,
+      gradient: 'from-amber-600/15 via-orange-950/20 to-[#0f111a] border-amber-500/30 text-amber-400',
+    },
+    {
+      name: SITE_CONFIG.affiliates.wise.name,
+      badge: SITE_CONFIG.affiliates.wise.tag,
+      headline: SITE_CONFIG.affiliates.wise.headline,
+      description: SITE_CONFIG.affiliates.wise.description,
+      link: SITE_CONFIG.affiliates.wise.destinationUrl,
+      cloakedDisplay: SITE_CONFIG.affiliates.wise.cloakedPath,
+      cta: SITE_CONFIG.affiliates.wise.ctaText,
+      icon: Globe2,
+      gradient: 'from-emerald-600/15 via-teal-950/20 to-[#0f111a] border-emerald-500/30 text-emerald-400',
+    },
+  ];
+
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
         <div>
           <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
             <Shield className="w-3.5 h-3.5 text-indigo-400" />
-            <span>Recommended International Tools</span>
+            <span>Recommended International Solutions</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-            Trusted Partners for Global Earners & Expats
+          <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+            Trusted Partners for Cross-Border Earners & Founders
           </h2>
         </div>
-        <span className="text-[11px] text-slate-500 hidden sm:block">
-          Transparent affiliate & partner disclosures apply
+        <span className="text-[11px] text-slate-500">
+          Independent partner recommendations
         </span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {PARTNERS.map((p) => {
-          const Icon = p.icon;
-
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {partners.map((p, i) => {
+          const IconComponent = p.icon;
           return (
             <div
-              key={p.name}
-              className={`rounded-3xl bg-gradient-to-b ${p.color} border p-6 flex flex-col justify-between backdrop-blur-xl shadow-lg hover:border-white/20 transition-all`}
+              key={i}
+              className={`rounded-3xl p-6 sm:p-7 bg-gradient-to-br ${p.gradient} border backdrop-blur-xl flex flex-col justify-between relative group hover:border-white/[0.2] transition-all duration-300 shadow-xl`}
             >
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2 font-bold text-lg text-white">
-                    <Icon className="w-5 h-5" />
-                    <span>{p.name}</span>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-white/[0.06] border border-white/[0.1] flex items-center justify-center">
+                      <IconComponent className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-white">{p.name}</h3>
+                      <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">
+                        {p.badge}
+                      </span>
+                    </div>
                   </div>
-                  <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-white/[0.08] text-slate-300">
-                    {p.badge}
+                  <span className="text-[10px] font-mono text-slate-500 px-2 py-0.5 rounded-md bg-white/[0.04]">
+                    {p.cloakedDisplay}
                   </span>
                 </div>
 
-                <h3 className="text-sm font-semibold text-slate-200 mb-2 leading-snug">
-                  {p.tagline}
-                </h3>
+                <h4 className="text-sm sm:text-base font-extrabold text-white mb-2 leading-snug">
+                  {p.headline}
+                </h4>
 
-                <p className="text-xs text-slate-400 leading-relaxed mb-5">
+                <p className="text-xs text-slate-300 leading-relaxed mb-6">
                   {p.description}
                 </p>
               </div>
 
-              <a
-                href={p.link}
-                target="_blank"
-                rel="noopener noreferrer sponsored"
-                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-white/[0.08] hover:bg-white/[0.15] border border-white/[0.1] transition-all"
-              >
-                <span>{p.cta}</span>
-                <ExternalLink className="w-3.5 h-3.5 opacity-70" />
-              </a>
+              <div className="pt-2">
+                <a
+                  href={p.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-white/[0.08] hover:bg-white/[0.15] border border-white/[0.1] flex items-center justify-center gap-2 transition-all cursor-pointer group-hover:shadow-lg"
+                >
+                  <span>{p.cta}</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
             </div>
           );
         })}
+      </div>
+
+      <div className="mt-4 text-center text-[11px] text-slate-500 max-w-2xl mx-auto leading-relaxed">
+        {SITE_CONFIG.affiliateDisclosure}
       </div>
     </section>
   );

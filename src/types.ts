@@ -31,6 +31,8 @@ export interface SubRegion {
   standardDeduction?: number;
 }
 
+export type LanguageCode = 'en' | 'zh' | 'ja' | 'ko' | 'ur';
+
 export interface CountryInfo {
   id: string;
   name: string;
@@ -47,6 +49,11 @@ export interface CountryInfo {
   subRegionLabel?: string; // "State" or "Province"
   notes?: string;
   officialSource?: string;
+  // Rich SEO & Educational Fields
+  overviewText?: string;
+  residencyRuleText?: string;
+  deductionsText?: string;
+  expatIncentivesText?: string;
 }
 
 export interface CountryCalculationResult {

@@ -860,6 +860,61 @@ export const COUNTRIES: CountryInfo[] = [
     notes: 'New Tax Regime (FY 2025-26): Standard deduction ₹75,000 + 4% cess.'
   },
   {
+    id: 'pakistan',
+    name: 'Pakistan',
+    code: 'PK',
+    currency: 'PKR',
+    flag: '🇵🇰',
+    costOfLivingAnnualUSD: 4800,
+    federalBrackets: [
+      { threshold: 0, rate: 0 },
+      { threshold: 600000, rate: 0.05 },
+      { threshold: 1200000, rate: 0.15 },
+      { threshold: 2200000, rate: 0.25 },
+      { threshold: 3200000, rate: 0.30 },
+      { threshold: 4100000, rate: 0.35 },
+    ],
+    socialContributions: [
+      { name: 'EOBI (Old-Age Benefits)', rate: 0.01, cap: 18000 }
+    ],
+    specialRules: [
+      { name: 'High-Income Surcharge (10%)', type: 'surcharge', trigger: 10000000, rate: 0.10, isPercentageOfTax: true }
+    ],
+    officialSource: 'https://fbr.gov.pk',
+    notes: 'FBR Tax Year 2025/2026 salaried slabs (Finance Act 2024): 0% up to ₨600k, progressive to 35% + 10% surcharge on taxable income > ₨10M.',
+    overviewText: 'Pakistan operates a progressive income tax system administered by the Federal Board of Revenue (FBR). For salaried individuals, tax rates range from 0% up to 35% with a 10% surcharge on taxable income exceeding ₨10 million.',
+    residencyRuleText: 'An individual is considered a tax resident of Pakistan if physically present in Pakistan for a period of, or periods amounting in aggregate to, 183 days or more in the tax year (July 1 to June 30).',
+    deductionsText: 'Salaried individuals benefit from a non-taxable basic slab up to ₨600,000 annually. Deductions and tax credits are available for charitable donations, approved pension funds, and medical insurance schemes.',
+    expatIncentivesText: 'Under the Income Tax Ordinance, specialized tax incentives exist for IT and software export freelancers and startups registered with the Pakistan Software Export Board (PSEB).'
+  },
+  {
+    id: 'china',
+    name: 'China',
+    code: 'CN',
+    currency: 'CNY',
+    flag: '🇨🇳',
+    costOfLivingAnnualUSD: 8400,
+    federalBrackets: [
+      { threshold: 0, rate: 0.03 },
+      { threshold: 36000, rate: 0.10 },
+      { threshold: 144000, rate: 0.20 },
+      { threshold: 300000, rate: 0.25 },
+      { threshold: 420000, rate: 0.30 },
+      { threshold: 660000, rate: 0.35 },
+      { threshold: 960000, rate: 0.45 },
+    ],
+    standardDeduction: 60000,
+    socialContributions: [
+      { name: 'Five Insurances & Housing Fund', rate: 0.105, cap: 42000 }
+    ],
+    officialSource: 'http://www.chinatax.gov.cn',
+    notes: 'State Taxation Administration (STA) Individual Income Tax on Comprehensive Income: standard deduction ¥60,000/yr + 7-tier progressive slabs (3% to 45%).',
+    overviewText: 'The People\'s Republic of China taxes individual income on a comprehensive annual progressive scale ranging from 3% to 45%, administered by the State Taxation Administration (STA).',
+    residencyRuleText: 'Under Chinese tax law, an individual who resides in China for 183 days or more in a calendar year is recognized as a tax resident subject to worldwide income reporting.',
+    deductionsText: 'A statutory basic standard deduction of ¥60,000 annually (¥5,000/month) applies to all comprehensive wage earners, alongside special additional deductions for children\'s education, continuing education, healthcare, and housing rent/mortgage.',
+    expatIncentivesText: 'China allows qualifying foreign expatriates to claim tax-exempt fringe benefits (including housing subsidies, children\'s education, language training, and home leave expenses) subject to tax authority filing.'
+  },
+  {
     id: 'mexico',
     name: 'Mexico',
     code: 'MX',
