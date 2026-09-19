@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Article } from '../data/articlesData';
 import { Clock, Calendar, ArrowRight, Sparkles, Calculator, Zap } from 'lucide-react';
 import { formatMoney } from '../engine/calculator';
@@ -16,6 +16,52 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
 }) => {
   // Live in-article simulator state for California vs Texas or US vs UK
   const [testSalary, setTestSalary] = useState(150000);
+
+  // Inject dynamic JSON-LD structured data for this article
+  useEffect(() => {
+    const schemaId = 'article-schema-ld';
+    let script = document.getElementById(schemaId) as HTMLScriptElement | null;
+    if (!script) {
+      script = document.createElement('script');
+      script.id = schemaId;
+      script.type = 'application/ld+json';
+      document.head.appendChild(script);
+    }
+
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: article.title,
+      description: article.description,
+      author: {
+        '@type': 'Organization',
+        name: article.author || 'TakeHomeGlobal Research Team',
+        url: 'https://takehomeglobal.com',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'TakeHomeGlobal',
+        url: 'https://takehomeglobal.com',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'https://takehomeglobal.com/logo.svg',
+        },
+      },
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': `https://takehomeglobal.com/#/tax-guides/${article.slug}/`,
+      },
+      datePublished: '2026-01-01',
+      dateModified: '2026-09-19',
+    };
+
+    script.textContent = JSON.stringify(jsonLd);
+
+    return () => {
+      const el = document.getElementById(schemaId);
+      if (el) el.remove();
+    };
+  }, [article]);
 
   // Quick calculations for in-article widgets
   const isCalTexas = article.slug.includes('california-vs-texas');

@@ -22,8 +22,16 @@
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://takehomeglobal.com" />
     <meta property="og:title" content="TakeHomeGlobal — Global Take-Home Pay & Income Tax Calculator" />
     <meta property="og:description" content="Calculate and compare take-home salary, social security, and real living costs across the world's top economies. 100% free and private." />
+    <meta property="og:image" content="https://takehomeglobal.com/logo.svg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://takehomeglobal.com" />
+    <meta property="twitter:title" content="TakeHomeGlobal — Global Take-Home Pay & Income Tax Calculator" />
+    <meta property="twitter:description" content="Calculate and compare take-home salary, social security, and real living costs across the world's top economies." />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -32,9 +40,212 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Structured Data: WebApplication Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "TakeHomeGlobal",
+      "url": "https://takehomeglobal.com",
+      "description": "Free international take-home pay calculator for 35+ countries and all 50 US states. Compare net salary, marginal income tax, social security contributions, and purchasing power.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "TakeHomeGlobal",
+        "url": "https://takehomeglobal.com",
+        "logo": "https://takehomeglobal.com/logo.svg"
+      }
+    }
+    </script>
+
+    <!-- Structured Data: FAQPage Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How accurate are the tax calculations on TakeHomeGlobal?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Every tax rate, deduction threshold, and contribution schedule is verified against official government tax authorities including the IRS (US), HMRC (UK), BMF (Germany), ATO (Australia), CRA (Canada), FBR (Pakistan), and NTA (Japan), updated for the 2026 fiscal year."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are employee Social Security and Healthcare contributions included?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Unlike calculators that only compute statutory income tax, TakeHomeGlobal models mandatory employee-side social contributions such as US FICA (Social Security & Medicare), UK National Insurance, German Sozialversicherung, Irish PRSI/USC, and Canadian CPP/EI."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are all 50 US State income taxes supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. TakeHomeGlobal includes tax brackets, flat rates, standard deductions, and personal exemptions for all 50 US States plus the District of Columbia. States with zero wage income tax (Texas, Florida, Washington, Nevada, Tennessee, Wyoming, South Dakota, Alaska) are correctly modeled at 0%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is any financial data stored, logged, or sent to a server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. TakeHomeGlobal operates 100% client-side inside your web browser. There are no user accounts, no analytics tracking your salary numbers, and zero server communication regarding your income. Your financial numbers never leave your device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is Real Purchasing Power and how is it calculated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Real Purchasing Power calculates your true disposable spending money by subtracting estimated essential annual living expenses (groceries, transportation, utilities, benchmarked from Numbeo city indexes) from your net take-home salary."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is Tax Freedom Day?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tax Freedom Day is the theoretical date in the calendar year when an individual has earned enough gross income to satisfy all annual statutory tax obligations. It is calculated as: 365 × (Total Tax / Gross Income)."
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body class="bg-[#090a0f] text-slate-100 antialiased selection:bg-indigo-500 selection:text-white">
-    <div id="root"></div>
+    <!-- Prerendered Semantic Snapshot: Ensures Google, Bing, and AI crawlers (SearchGPT, Perplexity) see rich structured content in raw page source before React hydrates -->
+    <div id="root">
+      <div style="max-width:1200px;margin:0 auto;padding:40px 20px;font-family:system-ui,-apple-system,sans-serif;line-height:1.6;color:#cbd5e1;">
+        <header style="border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:24px;margin-bottom:32px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+            <a href="/" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#ffffff;font-size:22px;font-weight:800;">
+              <span>TakeHomeGlobal</span>
+            </a>
+            <nav style="display:flex;gap:20px;font-size:14px;font-weight:600;">
+              <a href="#about" style="color:#94a3b8;text-decoration:none;">About</a>
+              <a href="#guides" style="color:#94a3b8;text-decoration:none;">Tax Guides</a>
+              <a href="#advertise" style="color:#94a3b8;text-decoration:none;">Advertise</a>
+              <a href="#contact" style="color:#94a3b8;text-decoration:none;">Contact</a>
+            </nav>
+          </div>
+        </header>
+
+        <main>
+          <article>
+            <span style="display:inline-block;padding:4px 12px;border-radius:9999px;background:rgba(16,185,129,0.1);color:#34d399;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">
+              Independent Tax Calculator · Updated for Tax Year 2026
+            </span>
+            <h1 style="font-size:42px;font-weight:900;color:#ffffff;line-height:1.15;margin-bottom:16px;">
+              Global Take-Home Pay &amp; Income Tax Calculator — How Much Do You Actually Keep?
+            </h1>
+            <p style="font-size:18px;color:#94a3b8;max-width:800px;margin-bottom:32px;">
+              Free international statutory income tax and take-home pay calculator for 35+ countries and all 50 US states. Compare net salaries, marginal income tax brackets, mandatory social security contributions, and purchasing power across the world’s top economies.
+            </p>
+
+            <section style="margin-bottom:40px;">
+              <h2 style="font-size:24px;font-weight:800;color:#ffffff;margin-bottom:12px;">Official Statutory Sources &amp; Legal Authorities</h2>
+              <p style="font-size:14px;color:#94a3b8;margin-bottom:16px;">
+                Calculations are benchmarked directly against official national revenue services and statutory tax codes:
+              </p>
+              <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;list-style:none;padding:0;font-size:13px;">
+                <li>🇺🇸 <a href="https://www.irs.gov/" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:underline;">United States Internal Revenue Service (IRS)</a></li>
+                <li>🇬🇧 <a href="https://www.gov.uk/government/organisations/hm-revenue-customs" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:underline;">United Kingdom HM Revenue &amp; Customs (HMRC)</a></li>
+                <li>🇩🇪 <a href="https://www.bundesfinanzministerium.de/" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:underline;">Germany Bundesministerium der Finanzen (BMF)</a></li>
+                <li>🇨🇦 <a href="https://www.canada.ca/en/revenue-agency.html" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:underline;">Canada Revenue Agency (CRA)</a></li>
+                <li>🇦🇺 <a href="https://www.ato.gov.au/" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:underline;">Australian Taxation Office (ATO)</a></li>
+                <li>🇵🇰 <a href="https://fbr.gov.pk/" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:underline;">Pakistan Federal Board of Revenue (FBR)</a></li>
+                <li>🇯🇵 <a href="https://www.nta.go.jp/" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:underline;">Japan National Tax Agency (NTA)</a></li>
+                <li>🇸🇬 <a href="https://www.iras.gov.sg/" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:underline;">Inland Revenue Authority of Singapore (IRAS)</a></li>
+                <li>🇦🇪 <a href="https://tax.gov.ae/" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:underline;">United Arab Emirates Federal Tax Authority (FTA)</a></li>
+              </ul>
+            </section>
+
+            <section style="margin-bottom:40px;">
+              <h2 style="font-size:24px;font-weight:800;color:#ffffff;margin-bottom:12px;">Fiscal Concepts &amp; Methodology</h2>
+              <p style="font-size:14px;color:#94a3b8;margin-bottom:16px;">
+                Learn more about core fiscal terms defined across international economics literature:
+              </p>
+              <div style="display:flex;flex-wrap:wrap;gap:12px;font-size:13px;">
+                <a href="https://en.wikipedia.org/wiki/Income_tax" target="_blank" rel="noopener noreferrer" style="padding:6px 14px;border-radius:8px;background:rgba(255,255,255,0.05);color:#c7d2fe;text-decoration:none;">📖 Income Tax (Wikipedia)</a>
+                <a href="https://en.wikipedia.org/wiki/Progressive_tax" target="_blank" rel="noopener noreferrer" style="padding:6px 14px;border-radius:8px;background:rgba(255,255,255,0.05);color:#c7d2fe;text-decoration:none;">📖 Progressive Tax Brackets (Wikipedia)</a>
+                <a href="https://en.wikipedia.org/wiki/Tax_rate#Effective" target="_blank" rel="noopener noreferrer" style="padding:6px 14px;border-radius:8px;background:rgba(255,255,255,0.05);color:#c7d2fe;text-decoration:none;">📖 Effective Tax Rate (Wikipedia)</a>
+                <a href="https://en.wikipedia.org/wiki/Payroll_tax" target="_blank" rel="noopener noreferrer" style="padding:6px 14px;border-radius:8px;background:rgba(255,255,255,0.05);color:#c7d2fe;text-decoration:none;">📖 Payroll &amp; Social Security Tax (Wikipedia)</a>
+                <a href="https://en.wikipedia.org/wiki/Tax_Freedom_Day" target="_blank" rel="noopener noreferrer" style="padding:6px 14px;border-radius:8px;background:rgba(255,255,255,0.05);color:#c7d2fe;text-decoration:none;">📖 Tax Freedom Day (Wikipedia)</a>
+              </div>
+            </section>
+
+            <section style="margin-bottom:40px;">
+              <h2 style="font-size:24px;font-weight:800;color:#ffffff;margin-bottom:16px;">Global Statutory Tax Overview (35+ Countries)</h2>
+              <div style="overflow-x:auto;">
+                <table style="width:100%;border-collapse:collapse;font-size:13px;text-align:left;">
+                  <thead>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.15);color:#94a3b8;">
+                      <th style="padding:10px 12px;">Country / Jurisdiction</th>
+                      <th style="padding:10px 12px;">Currency</th>
+                      <th style="padding:10px 12px;">Standard Allowance</th>
+                      <th style="padding:10px 12px;">Top Marginal Rate</th>
+                      <th style="padding:10px 12px;">Direct Hub Page</th>
+                    </tr>
+                  </thead>
+                  <tbody style="color:#e2e8f0;">
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px 12px;font-weight:700;">United States</td><td>USD ($)</td><td>$15,000</td><td>37.0% + State (0% - 13.3%)</td><td><a href="#/tax-calculator/usa/" style="color:#818cf8;">US Tax Calculator &rarr;</a></td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px 12px;font-weight:700;">United Kingdom</td><td>GBP (£)</td><td>£12,570</td><td>45.0% (Tapers above £100k)</td><td><a href="#/tax-calculator/uk/" style="color:#818cf8;">UK Tax Calculator &rarr;</a></td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px 12px;font-weight:700;">Germany</td><td>EUR (€)</td><td>€12,084</td><td>45.0% + Solidaritätszuschlag</td><td><a href="#/tax-calculator/germany/" style="color:#818cf8;">Germany Tax Calculator &rarr;</a></td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px 12px;font-weight:700;">United Arab Emirates</td><td>AED (د.إ)</td><td>No limit</td><td>0.0% Personal Income Tax</td><td><a href="#/tax-calculator/uae/" style="color:#818cf8;">UAE Tax Calculator &rarr;</a></td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px 12px;font-weight:700;">Singapore</td><td>SGD ($)</td><td>$20,000</td><td>24.0% Progressive</td><td><a href="#/tax-calculator/singapore/" style="color:#818cf8;">Singapore Tax Calculator &rarr;</a></td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px 12px;font-weight:700;">Switzerland</td><td>CHF (Fr.)</td><td>CHF 15,000</td><td>11.5% Federal + Cantonal (~22%)</td><td><a href="#/tax-calculator/switzerland/" style="color:#818cf8;">Swiss Tax Calculator &rarr;</a></td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px 12px;font-weight:700;">Pakistan</td><td>PKR (₨)</td><td>₨600,000</td><td>35.0% + 10% Surcharge</td><td><a href="#/tax-calculator/pakistan/" style="color:#818cf8;">Pakistan Tax Calculator &rarr;</a></td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px 12px;font-weight:700;">Japan</td><td>JPY (¥)</td><td>¥480,000</td><td>45.0% + 10% Inhabitant Tax</td><td><a href="#/tax-calculator/japan/" style="color:#818cf8;">Japan Tax Calculator &rarr;</a></td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px 12px;font-weight:700;">China</td><td>CNY (¥)</td><td>¥60,000</td><td>45.0% Progressive</td><td><a href="#/tax-calculator/china/" style="color:#818cf8;">China Tax Calculator &rarr;</a></td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px 12px;font-weight:700;">Australia</td><td>AUD ($)</td><td>$18,200</td><td>45.0% + 2% Medicare</td><td><a href="#/tax-calculator/australia/" style="color:#818cf8;">Australia Tax Calculator &rarr;</a></td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px 12px;font-weight:700;">Canada</td><td>CAD ($)</td><td>$15,705</td><td>33.0% Federal + Provincial</td><td><a href="#/tax-calculator/canada/" style="color:#818cf8;">Canada Tax Calculator &rarr;</a></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section style="margin-bottom:40px;">
+              <h2 style="font-size:24px;font-weight:800;color:#ffffff;margin-bottom:16px;">Frequently Asked Questions</h2>
+              <dl style="display:grid;gap:16px;">
+                <div style="padding:16px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+                  <dt style="font-weight:700;color:#ffffff;margin-bottom:6px;">How accurate are the tax calculations on TakeHomeGlobal?</dt>
+                  <dd style="margin:0;font-size:14px;color:#94a3b8;">Every tax rate, deduction threshold, and contribution schedule is verified against official government tax authorities (IRS for the US, HMRC for the UK, BMF for Germany, ATO for Australia, CRA for Canada, FBR for Pakistan, NTA for Japan) and updated for the 2026 fiscal year.</dd>
+                </div>
+                <div style="padding:16px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+                  <dt style="font-weight:700;color:#ffffff;margin-bottom:6px;">Are employee Social Security and Healthcare contributions included?</dt>
+                  <dd style="margin:0;font-size:14px;color:#94a3b8;">Yes. Unlike calculators that only compute statutory income tax, TakeHomeGlobal models mandatory employee-side social contributions—such as FICA in the US, National Insurance in the UK, Sozialversicherung in Germany, PRSI &amp; USC in Ireland, and CPP/EI in Canada—so the take-home pay figure accurately reflects the net cash that reaches your bank account.</dd>
+                </div>
+                <div style="padding:16px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+                  <dt style="font-weight:700;color:#ffffff;margin-bottom:6px;">Are all 50 US State income taxes supported?</dt>
+                  <dd style="margin:0;font-size:14px;color:#94a3b8;">Yes. TakeHomeGlobal includes tax brackets, flat rates, standard deductions, and personal exemptions for all 50 US States plus the District of Columbia. States with zero wage income tax (Texas, Florida, Washington, Nevada, Tennessee, Wyoming, South Dakota, Alaska) are correctly modeled at 0%.</dd>
+                </div>
+                <div style="padding:16px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+                  <dt style="font-weight:700;color:#ffffff;margin-bottom:6px;">Is any financial data stored, logged, or sent to a server?</dt>
+                  <dd style="margin:0;font-size:14px;color:#94a3b8;">No. TakeHomeGlobal operates 100% client-side inside your web browser. There are no user accounts, no analytics tracking your salary numbers, and zero server communication regarding your income. Your numbers never leave your device.</dd>
+                </div>
+              </dl>
+            </section>
+          </article>
+        </main>
+
+        <footer style="border-top:1px solid rgba(255,255,255,0.1);padding-top:24px;margin-top:40px;font-size:12px;color:#64748b;text-align:center;">
+          <p style="margin-bottom:8px;">TakeHomeGlobal is an independent financial literacy and tax benchmarking application. Not intended as formal legal or tax advisory.</p>
+          <p>&copy; 2026 TakeHomeGlobal. All statutory tax data cited from official government revenue authorities.</p>
+        </footer>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

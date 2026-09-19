@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { CountryInfo } from '../types';
 import { calculateCountryTax, formatMoney, dayOfYearToDate } from '../engine/calculator';
 import { COUNTRIES } from '../data/taxData';
@@ -25,6 +25,44 @@ export const CountryHubPage: React.FC<CountryHubPageProps> = ({
   const [selectedSubRegion, setSelectedSubRegion] = useState<string>(
     country.subRegions ? Object.keys(country.subRegions)[0] : ''
   );
+
+  // Inject dynamic JSON-LD structured data for this country hub
+  useEffect(() => {
+    const schemaId = 'country-hub-schema-ld';
+    let script = document.getElementById(schemaId) as HTMLScriptElement | null;
+    if (!script) {
+      script = document.createElement('script');
+      script.id = schemaId;
+      script.type = 'application/ld+json';
+      document.head.appendChild(script);
+    }
+
+    const wikiSlug = encodeURIComponent(country.name.replace(/\s+/g, '_'));
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'GovernmentService',
+      name: `${country.name} Tax Calculator & 2026 Brackets`,
+      serviceType: 'Statutory Income Tax and Take-Home Pay Calculation',
+      description: `Official 2026 progressive tax rates, social security contributions, standard deduction, and net take-home salary estimator for ${country.name} (${country.currency}).`,
+      provider: {
+        '@type': 'Organization',
+        name: 'TakeHomeGlobal',
+        url: 'https://takehomeglobal.com',
+      },
+      url: `https://takehomeglobal.com/#/tax-calculator/${country.id}/`,
+      sameAs: [
+        country.officialSource,
+        `https://en.wikipedia.org/wiki/Taxation_in_${wikiSlug}`,
+      ].filter(Boolean),
+    };
+
+    script.textContent = JSON.stringify(jsonLd);
+
+    return () => {
+      const el = document.getElementById(schemaId);
+      if (el) el.remove();
+    };
+  }, [country]);
 
   // Compute calculation
   const result = calculateCountryTax(
