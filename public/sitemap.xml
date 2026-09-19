@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core Navigation -->
+  <url>
+    <loc>https://takehomeglobal.com/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://takehomeglobal.com/#about</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://takehomeglobal.com/#advertise</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://takehomeglobal.com/#contact</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://takehomeglobal.com/#guides</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Dedicated Country Tax Calculators -->
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/usa/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/uk/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/germany/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/canada/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/australia/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/uae/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/singapore/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/switzerland/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/ireland/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/france/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/spain/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/portugal/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/italy/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/netherlands/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/lithuania/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/japan/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/korea/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/hongkong/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/india/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/pakistan/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/china/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/mexico/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/czechia/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/malta/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/luxembourg/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/sweden/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/norway/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/denmark/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/belgium/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/austria/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/poland/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/thailand/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/cyprus/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/monaco/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-calculator/cayman/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <!-- Detailed Relocation & Comparison Guides -->
+  <url><loc>https://takehomeglobal.com/#/tax-guides/california-vs-texas-take-home-pay-2026/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-guides/uk-vs-uae-tax-comparison-high-earners/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-guides/germany-vs-switzerland-take-home-pay-guide/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-guides/singapore-vs-hong-kong-tax-haven-comparison/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-guides/remote-worker-tax-arbitrage-portugal-nhr/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-guides/italy-flat-tax-regime-for-foreigners/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://takehomeglobal.com/#/tax-guides/us-expat-tax-foreign-earned-income-exclusion/</loc><lastmod>2026-09-19</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+</urlset>

@@ -20,9 +20,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigateHome }) => {
     e.preventDefault();
     setSubmitted(true);
     try {
-      const contacts = JSON.parse(localStorage.getItem('taxatlas_contacts') || '[]');
+      const contacts = JSON.parse(localStorage.getItem('takehomeglobal_contacts') || '[]');
       contacts.push({ ...form, timestamp: new Date().toISOString() });
-      localStorage.setItem('taxatlas_contacts', JSON.stringify(contacts));
+      localStorage.setItem('takehomeglobal_contacts', JSON.stringify(contacts));
     } catch {
       // ignore
     }
@@ -43,7 +43,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigateHome }) => {
           <span>Get in Touch</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">
-          Contact TaxAtlas & Expert Directory
+          Contact TakeHomeGlobal & Expert Directory
         </h1>
         <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
           Are you a licensed CPA, tax attorney, or relocation consultant looking to feature your practice on country hub calculators? Or do you have a regulatory update to report? Reach out below.

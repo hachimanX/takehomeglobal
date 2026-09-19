@@ -26,7 +26,7 @@ export const ARTICLES: Article[] = [
     description: 'A data-backed head-to-head analysis comparing California graduated income tax with Texas zero state income tax, property taxes, sales taxes, and real take-home purchasing power.',
     readTime: '6 min read',
     publishDate: 'Updated for Tax Year 2026',
-    author: 'TaxAtlas Research Team',
+    author: 'TakeHomeGlobal Research Team',
     highlightStat: 'Save $9,300/year in income tax on a $100k salary by choosing Texas over California',
     summaryPoints: [
       'California imposes marginal state income tax brackets from 1.0% to 13.3% (plus a 1.1% uncapped SDI payroll tax).',
@@ -75,7 +75,7 @@ export const ARTICLES: Article[] = [
     description: 'Direct salary comparison between the United States and the United Kingdom across federal/national taxes, National Insurance vs FICA Medicare, and personal allowances.',
     readTime: '7 min read',
     publishDate: 'Updated for Tax Year 2026',
-    author: 'TaxAtlas Global Policy Team',
+    author: 'TakeHomeGlobal Global Policy Team',
     highlightStat: 'US filers in moderate-tax states retain 8% to 14% more net salary than UK counterparts at £100k/$130k',
     summaryPoints: [
       'The UK standard personal allowance is £12,570, but it tapers away by £1 for every £2 earned above £100,000, creating an effective 60% marginal tax trap between £100k and £125,140.',
@@ -114,7 +114,7 @@ export const ARTICLES: Article[] = [
     description: 'Everything you need to know about living in Alaska, Florida, Nevada, New Hampshire, South Dakota, Tennessee, Texas, Washington, and Wyoming.',
     readTime: '5 min read',
     publishDate: 'Updated for Tax Year 2026',
-    author: 'TaxAtlas US Research',
+    author: 'TakeHomeGlobal US Research',
     highlightStat: '9 US states levy zero personal income tax on wage income in 2026',
     summaryPoints: [
       'The 9 states without wage income tax: Alaska, Florida, Nevada, New Hampshire, South Dakota, Tennessee, Texas, Washington, and Wyoming.',
@@ -149,7 +149,7 @@ export const ARTICLES: Article[] = [
     description: 'Discover the most tax-efficient destinations in Europe, from Cyprus 60-day residency and Malta remittance to Bulgaria 10% flat tax and Andorra.',
     readTime: '8 min read',
     publishDate: 'Updated for Tax Year 2026',
-    author: 'TaxAtlas Expat Desk',
+    author: 'TakeHomeGlobal Expat Desk',
     highlightStat: 'Cyprus offers first €19,500 tax-free + 60-day residency; Bulgaria flat 10%; Monaco 0%',
     summaryPoints: [
       'Bulgaria has a flat 10% personal income tax rate, one of the lowest in the European Union.',
@@ -185,7 +185,7 @@ export const ARTICLES: Article[] = [
     description: 'Explore the global calendar of Tax Freedom Days. Understand when citizens in 30+ countries have earned enough to pay their full annual tax burden.',
     readTime: '5 min read',
     publishDate: 'Updated for Tax Year 2026',
-    author: 'TaxAtlas Analytics',
+    author: 'TakeHomeGlobal Analytics',
     highlightStat: 'Tax Freedom Day arrives as early as Jan 1 (UAE/Monaco) and as late as July 15 (Belgium/France)',
     summaryPoints: [
       'Tax Freedom Day is the theoretical date in the calendar year when an individual has earned enough gross income to satisfy all annual tax liabilities.',
@@ -210,7 +210,7 @@ export const ARTICLES: Article[] = [
     description: 'Everything you need to know about German income tax classes, married filing combinations (3/5 vs 4/4), and how they affect your monthly net salary.',
     readTime: '6 min read',
     publishDate: 'Updated for Tax Year 2026',
-    author: 'TaxAtlas European Desk',
+    author: 'TakeHomeGlobal European Desk',
     highlightStat: 'Choosing Steuerklasse 3 vs 4 can shift your monthly net pay by €400 to €900/month',
     summaryPoints: [
       'Steuerklasse 1: Single, divorced, or separated employees with no children.',
@@ -235,7 +235,7 @@ export const ARTICLES: Article[] = [
     description: 'Official inflation-adjusted limits for tax-advantaged retirement and healthcare savings accounts in the United States.',
     readTime: '4 min read',
     publishDate: 'Updated for Tax Year 2026',
-    author: 'TaxAtlas Financial Planning',
+    author: 'TakeHomeGlobal Financial Planning',
     highlightStat: 'Maxing out 401(k) + HSA can reduce your taxable gross income by over $28,000',
     summaryPoints: [
       '2026 401(k) employee elective deferral limit: $23,500 (plus $7,500 catch-up for age 50+).',

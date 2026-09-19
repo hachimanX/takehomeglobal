@@ -8,20 +8,20 @@ interface FaqItem {
 
 const FAQS: FaqItem[] = [
   {
-    q: 'How accurate are the tax calculations on TaxAtlas?',
+    q: 'How accurate are the tax calculations on TakeHomeGlobal?',
     a: 'Every tax rate, deduction threshold, and contribution schedule is verified against official government tax authorities (IRS for the US, HMRC for the UK, BMF for Germany, ATO for Australia, etc.) and updated for the 2026 fiscal year. While we provide reference-grade estimates using statutory marginal brackets and standard allowances, actual tax liabilities may vary based on itemized deductions, family status, and bilateral tax treaties. Always consult a qualified tax advisor for official filing.',
   },
   {
     q: 'Are employee Social Security and Healthcare contributions included?',
-    a: 'Yes. Unlike calculators that only compute statutory income tax, TaxAtlas models mandatory employee-side social contributions—such as FICA (Social Security & Medicare) in the United States, National Insurance (NI) in the United Kingdom, Sozialversicherung in Germany, PRSI & USC in Ireland, and CPP/EI in Canada—so the take-home pay figure accurately reflects the net cash that reaches your bank account.',
+    a: 'Yes. Unlike calculators that only compute statutory income tax, TakeHomeGlobal models mandatory employee-side social contributions—such as FICA (Social Security & Medicare) in the United States, National Insurance (NI) in the United Kingdom, Sozialversicherung in Germany, PRSI & USC in Ireland, and CPP/EI in Canada—so the take-home pay figure accurately reflects the net cash that reaches your bank account.',
   },
   {
     q: 'Are all 50 US State income taxes supported?',
-    a: 'Yes. TaxAtlas includes tax brackets, flat rates, standard deductions, and personal exemptions for all 50 US States plus the District of Columbia. States with zero wage income tax (such as Texas, Florida, Washington, Nevada, Tennessee, Wyoming, South Dakota, and Alaska) are correctly modeled at 0%.',
+    a: 'Yes. TakeHomeGlobal includes tax brackets, flat rates, standard deductions, and personal exemptions for all 50 US States plus the District of Columbia. States with zero wage income tax (such as Texas, Florida, Washington, Nevada, Tennessee, Wyoming, South Dakota, and Alaska) are correctly modeled at 0%.',
   },
   {
     q: 'Is any of my financial data stored, logged, or sent to a server?',
-    a: 'No. TaxAtlas operates 100% client-side inside your web browser. There are no user accounts, no analytics tracking your salary numbers, and zero server communication regarding your income. Your numbers never leave your device.',
+    a: 'No. TakeHomeGlobal operates 100% client-side inside your web browser. There are no user accounts, no analytics tracking your salary numbers, and zero server communication regarding your income. Your numbers never leave your device.',
   },
   {
     q: 'What is Real Purchasing Power and how is it calculated?',

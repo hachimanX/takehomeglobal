@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>TakeHomeGlobal — Redirecting...</title>
+    <script>
+      // Single Page Application redirect for GitHub Pages custom domains
+      // Preserves deep links, paths, search params, and hash fragments
+      (function() {
+        var path = window.location.pathname;
+        var search = window.location.search;
+        var hash = window.location.hash;
+        
+        // Remove trailing slash if present (except root)
+        if (path.length > 1 && path.endsWith('/')) {
+          path = path.slice(0, -1);
+        }
+        
+        // Redirect to hash route
+        window.location.replace('/#' + path + (search ? '?' + search.slice(1) : '') + hash);
+      })();
+    </script>
+  </head>
+  <body style="background-color:#090a0f;color:#94a3b8;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;">
+    <p>Loading TakeHomeGlobal...</p>
+  </body>
+</html>

@@ -1,8 +1,8 @@
-# 🌐 TaxAtlas — Global Income Tax & Purchasing Power Calculator
+# 🌐 TakeHomeGlobal — Global Income Tax & Take-Home Pay Calculator
 
-An exceptionally fast, beautiful, privacy-first web application to compare take-home pay, social security, real living costs, and tax freedom days across 30+ major economies.
+An exceptionally fast, beautiful, privacy-first web application to compare take-home pay, social security, real living costs, and tax freedom days across 35+ major economies and all 50 US states.
 
-Built as a modern, 100% free-to-host replication and enhancement of [CountryTaxCalc](https://www.countrytaxcalc.com/).
+Live at: **[takehomeglobal.com](https://takehomeglobal.com)**
 
 ---
 
