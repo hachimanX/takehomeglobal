@@ -4,6 +4,7 @@ import { calculateCountryTax, formatMoney, dayOfYearToDate } from '../engine/cal
 import { COUNTRIES } from '../data/taxData';
 import { DonutChart } from './DonutChart';
 import { ExternalLink, Calendar, ShoppingCart, ArrowRight, BookOpen, ShieldCheck, Scale } from 'lucide-react';
+import { CountryFlag } from './CountryFlag';
 
 interface CountryHubPageProps {
   country: CountryInfo;
@@ -47,9 +48,9 @@ export const CountryHubPage: React.FC<CountryHubPageProps> = ({
       {/* Hero Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-8 border-b border-white/[0.08] mb-8">
         <div className="flex items-center gap-4">
-          <span className="text-5xl p-3 rounded-3xl bg-white/[0.04] border border-white/[0.08] shadow-inner">
-            {country.flag}
-          </span>
+          <div className="p-2 rounded-2xl bg-white/[0.04] border border-white/[0.08] shadow-inner flex items-center justify-center shrink-0">
+            <CountryFlag code={country.code} name={country.name} size="xl" />
+          </div>
           <div>
             <div className="flex items-center gap-2 mb-1">
               <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
@@ -354,8 +355,8 @@ export const CountryHubPage: React.FC<CountryHubPageProps> = ({
                   onClick={() => onSelectCountryToCompare(id)}
                   className="flex items-center justify-between p-3.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.06] hover:border-indigo-500/40 transition-all text-left group cursor-pointer"
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="text-xl">{targetCountry.flag}</span>
+                  <div className="flex items-center gap-2.5">
+                    <CountryFlag code={targetCountry.code} name={targetCountry.name} size="sm" />
                     <span className="text-xs font-semibold text-white group-hover:text-indigo-300 transition-colors">
                       {targetCountry.name}
                     </span>

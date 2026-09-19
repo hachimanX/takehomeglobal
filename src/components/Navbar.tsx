@@ -13,6 +13,7 @@ import { SUPPORTED_CURRENCIES } from '../data/exchangeRates';
 import { COUNTRIES } from '../data/taxData';
 import { SITE_CONFIG } from '../config';
 import type { LanguageCode } from '../types';
+import { CountryFlag } from './CountryFlag';
 
 interface NavbarProps {
   selectedCurrency: string;
@@ -25,12 +26,11 @@ interface NavbarProps {
   onOpenEmbed?: () => void;
 }
 
-const LANGUAGES: { code: LanguageCode; label: string; flag: string }[] = [
-  { code: 'en', label: 'English', flag: '🇺🇸' },
-  { code: 'zh', label: '简体中文', flag: '🇨🇳' },
-  { code: 'ja', label: '日本語', flag: '🇯🇵' },
-  { code: 'ko', label: '한국어', flag: '🇰🇷' },
-  { code: 'ur', label: 'اردو', flag: '🇵🇰' },
+const LANGUAGES: { code: LanguageCode; label: string; countryCode: string }[] = [
+  { code: 'en', label: 'English', countryCode: 'US' },
+  { code: 'zh', label: '简体中文', countryCode: 'CN' },
+  { code: 'ja', label: '日本語', countryCode: 'JP' },
+  { code: 'ko', label: '한국어', countryCode: 'KR' },
 ];
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -134,7 +134,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                           className="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-white/[0.06] hover:text-white transition-colors flex items-center justify-between cursor-pointer"
                         >
                           <span className="flex items-center gap-2">
-                            <span>{c.flag}</span>
+                            <CountryFlag code={c.code} name={c.name} size="sm" />
                             <span>{c.name}</span>
                           </span>
                           <span className="text-[10px] text-slate-400 font-mono">{c.currency}</span>
@@ -281,7 +281,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => toggleDropdown('language')}
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-xs font-semibold text-slate-300 hover:text-white transition-colors cursor-pointer"
               >
-                <span>{currentLangObj.flag}</span>
+                <CountryFlag code={currentLangObj.countryCode} size="sm" />
                 <span className="text-[11px] uppercase font-bold">{currentLangObj.code}</span>
                 <ChevronDown className="w-3 h-3 opacity-60" />
               </button>
@@ -307,7 +307,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         }`}
                       >
                         <span className="flex items-center gap-2">
-                          <span>{l.flag}</span>
+                          <CountryFlag code={l.countryCode} size="sm" />
                           <span>{l.label}</span>
                         </span>
                         {language === l.code && <Check className="w-3.5 h-3.5" />}
@@ -412,7 +412,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         : 'bg-white/[0.03] text-slate-300 border-white/[0.08]'
                     }`}
                   >
-                    <span>{l.flag}</span>
+                    <CountryFlag code={l.countryCode} size="sm" />
                     <span>{l.label}</span>
                   </button>
                 ))}

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Plus, X, Search, Globe, Shield, Code, Sparkles } from 'lucide-react';
+import { Plus, X, Search, Globe, Shield, Code, Sparkles, ChevronDown, Check } from 'lucide-react';
 import { COUNTRIES } from '../data/taxData';
 import { SUPPORTED_CURRENCIES } from '../data/exchangeRates';
 import { TRANSLATIONS } from '../data/translations';
+import { CountryFlag } from './CountryFlag';
 import type { LanguageCode } from '../types';
 
 interface HeroSectionProps {
@@ -13,6 +14,7 @@ interface HeroSectionProps {
   selectedCountries: string[]; // country IDs
   onAddCountry: (id: string) => void;
   onRemoveCountry: (id: string) => void;
+  onSetPrimaryCountry: (id: string) => void;
   selectedSubRegions: Record<string, string>; // countryId -> subRegionName
   onSubRegionChange: (countryId: string, subRegion: string) => void;
   onOpenEmbed?: () => void;
@@ -29,6 +31,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   selectedCountries,
   onAddCountry,
   onRemoveCountry,
+  onSetPrimaryCountry,
   selectedSubRegions,
   onSubRegionChange,
   onOpenEmbed,
@@ -36,6 +39,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [primaryDropdownOpen, setPrimaryDropdownOpen] = useState(false);
+  const [primarySearchQuery, setPrimarySearchQuery] = useState('');
 
   const t = TRANSLATIONS[language] || TRANSLATIONS.en;
   const currSymbol = SUPPORTED_CURRENCIES.find((c) => c.code === baseCurrency)?.symbol || '$';
@@ -43,6 +48,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   // Primary country is the first selected country
   const primaryCountryId = selectedCountries[0] || 'usa';
   const primaryCountry = COUNTRIES.find((c) => c.id === primaryCountryId) || COUNTRIES[0];
+
+  const filteredPrimaryCountries = COUNTRIES.filter(
+    (c) =>
+      c.name.toLowerCase().includes(primarySearchQuery.toLowerCase()) ||
+      c.code.toLowerCase().includes(primarySearchQuery.toLowerCase()) ||
+      c.currency.toLowerCase().includes(primarySearchQuery.toLowerCase())
+  );
 
   const filteredCountries = COUNTRIES.filter(
     (c) =>
@@ -52,22 +64,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   );
 
   const handleClearAll = () => {
-    // Reset to just USA
+    // Reset to just the primary country
     selectedCountries.forEach((id) => {
-      if (id !== 'usa') onRemoveCountry(id);
+      if (id !== primaryCountryId) onRemoveCountry(id);
     });
-    if (!selectedCountries.includes('usa')) {
-      onAddCountry('usa');
-    }
     onIncomeChange(100000);
   };
 
   const handlePrimaryCountryChange = (newId: string) => {
+    setPrimaryDropdownOpen(false);
+    setPrimarySearchQuery('');
     if (newId === primaryCountryId) return;
-    // Put newId first
-    if (!selectedCountries.includes(newId)) {
-      onAddCountry(newId);
-    }
+    onSetPrimaryCountry(newId);
   };
 
   return (
@@ -238,26 +246,87 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               </div>
 
               {/* Input 3: Primary Country */}
-              <div>
+              <div className="relative">
                 <label className="block text-xs font-semibold text-slate-300 mb-2">
                   {t.countryToCalculateLabel}
                 </label>
                 <div className="relative">
-                  <select
-                    value={primaryCountry.id}
-                    onChange={(e) => handlePrimaryCountryChange(e.target.value)}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPrimaryDropdownOpen(!primaryDropdownOpen);
+                      setDropdownOpen(false);
+                    }}
+                    className="w-full px-4 py-3 text-sm font-bold rounded-2xl bg-white/[0.04] border border-white/[0.1] hover:border-indigo-500/50 text-white flex items-center justify-between transition-all cursor-pointer text-left"
                     aria-label="Select country to calculate"
-                    className="w-full px-4 py-3 text-sm font-bold rounded-2xl bg-white/[0.04] border border-white/[0.1] text-white focus:border-indigo-500 focus:outline-none appearance-none cursor-pointer"
                   >
-                    {COUNTRIES.map((c) => (
-                      <option key={c.id} value={c.id} className="bg-[#12141e] text-white">
-                        {c.flag} {c.name} ({c.currency})
-                      </option>
-                    ))}
-                  </select>
-                  <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-slate-400 text-xs">
-                    ▼
-                  </div>
+                    <div className="flex items-center gap-3 min-w-0">
+                      <CountryFlag code={primaryCountry.code} name={primaryCountry.name} size="md" />
+                      <span className="truncate">{primaryCountry.name}</span>
+                      <span className="text-xs text-slate-400 font-normal shrink-0">
+                        ({primaryCountry.currency})
+                      </span>
+                    </div>
+                    <ChevronDown
+                      className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${
+                        primaryDropdownOpen ? 'rotate-180 text-indigo-400' : ''
+                      }`}
+                    />
+                  </button>
+
+                  {/* Primary Country Dropdown Popover */}
+                  {primaryDropdownOpen && (
+                    <>
+                      <div
+                        className="fixed inset-0 z-40"
+                        onClick={() => {
+                          setPrimaryDropdownOpen(false);
+                          setPrimarySearchQuery('');
+                        }}
+                      />
+                      <div className="absolute left-0 right-0 top-full mt-2 max-h-80 overflow-y-auto bg-[#131522] border border-white/[0.15] rounded-2xl shadow-2xl p-2 z-50 space-y-1">
+                        <div className="p-2 border-b border-white/[0.08] sticky top-0 bg-[#131522] z-10">
+                          <div className="relative">
+                            <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                            <input
+                              type="text"
+                              placeholder="Search 35+ countries..."
+                              value={primarySearchQuery}
+                              onChange={(e) => setPrimarySearchQuery(e.target.value)}
+                              className="w-full pl-8 pr-2 py-1.5 text-xs bg-black/40 border border-white/[0.1] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                              autoFocus
+                            />
+                          </div>
+                        </div>
+                        <div className="py-1">
+                          {filteredPrimaryCountries.map((c) => {
+                            const isSelected = c.id === primaryCountry.id;
+                            return (
+                              <button
+                                key={c.id}
+                                type="button"
+                                onClick={() => handlePrimaryCountryChange(c.id)}
+                                className={`w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-xl transition-colors text-left cursor-pointer ${
+                                  isSelected
+                                    ? 'bg-indigo-600/30 text-indigo-300 border border-indigo-500/30'
+                                    : 'text-slate-200 hover:bg-indigo-600 hover:text-white'
+                                }`}
+                              >
+                                <span className="flex items-center gap-2.5">
+                                  <CountryFlag code={c.code} name={c.name} size="sm" />
+                                  <span>{c.name}</span>
+                                </span>
+                                <span className="flex items-center gap-2 text-[10px] text-slate-400">
+                                  <span>{c.currency}</span>
+                                  {isSelected && <Check className="w-3.5 h-3.5 text-indigo-400" />}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -304,7 +373,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 {/* Add Country to Compare Button */}
                 <div className="relative">
                   <button
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                    onClick={() => {
+                      setDropdownOpen(!dropdownOpen);
+                      setPrimaryDropdownOpen(false);
+                    }}
                     className="w-full py-3.5 px-5 rounded-2xl font-bold text-sm text-slate-200 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.12] transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <Plus className="w-4 h-4 text-indigo-400" />
@@ -313,40 +385,49 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
                   {/* Dropdown Popover */}
                   {dropdownOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-72 max-h-72 overflow-y-auto bg-[#131522] border border-white/[0.15] rounded-2xl shadow-2xl p-2 z-[100] space-y-1">
-                      <div className="p-2 border-b border-white/[0.08]">
-                        <div className="relative">
-                          <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
-                          <input
-                            type="text"
-                            placeholder="Filter countries..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-8 pr-2 py-1.5 text-xs bg-black/40 border border-white/[0.1] rounded-xl text-white focus:outline-none"
-                            autoFocus
-                          />
+                    <>
+                      <div
+                        className="fixed inset-0 z-40"
+                        onClick={() => {
+                          setDropdownOpen(false);
+                          setSearchQuery('');
+                        }}
+                      />
+                      <div className="absolute right-0 top-full mt-2 w-72 max-h-72 overflow-y-auto bg-[#131522] border border-white/[0.15] rounded-2xl shadow-2xl p-2 z-50 space-y-1">
+                        <div className="p-2 border-b border-white/[0.08] sticky top-0 bg-[#131522] z-10">
+                          <div className="relative">
+                            <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                            <input
+                              type="text"
+                              placeholder="Filter countries..."
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                              className="w-full pl-8 pr-2 py-1.5 text-xs bg-black/40 border border-white/[0.1] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                              autoFocus
+                            />
+                          </div>
+                        </div>
+                        <div className="py-1">
+                          {filteredCountries.map((c) => (
+                            <button
+                              key={c.id}
+                              onClick={() => {
+                                onAddCountry(c.id);
+                                setDropdownOpen(false);
+                                setSearchQuery('');
+                              }}
+                              className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-xl text-slate-200 hover:bg-indigo-600 hover:text-white transition-colors text-left cursor-pointer"
+                            >
+                              <span className="flex items-center gap-2">
+                                <CountryFlag code={c.code} name={c.name} size="sm" />
+                                <span>{c.name}</span>
+                              </span>
+                              <span className="text-[10px] text-slate-400 opacity-80">{c.code}</span>
+                            </button>
+                          ))}
                         </div>
                       </div>
-                      <div className="py-1">
-                        {filteredCountries.map((c) => (
-                          <button
-                            key={c.id}
-                            onClick={() => {
-                              onAddCountry(c.id);
-                              setDropdownOpen(false);
-                              setSearchQuery('');
-                            }}
-                            className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-xl text-slate-200 hover:bg-indigo-600 hover:text-white transition-colors text-left cursor-pointer"
-                          >
-                            <span className="flex items-center gap-2">
-                              <span>{c.flag}</span>
-                              <span>{c.name}</span>
-                            </span>
-                            <span className="text-[10px] text-slate-400 opacity-80">{c.code}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+                    </>
                   )}
                 </div>
               </div>
@@ -374,7 +455,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                           key={cId}
                           className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-xs text-white"
                         >
-                          <span className="text-base">{c.flag}</span>
+                          <CountryFlag code={c.code} name={c.name} size="sm" />
                           <span className="font-semibold">{c.name}</span>
                           {c.subRegions && selectedSubRegions[c.id] && (
                             <span className="text-[10px] text-indigo-300">

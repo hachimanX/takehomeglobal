@@ -34,14 +34,7 @@ export const App: React.FC = () => {
   // Calculator Parameters
   const [grossIncome, setGrossIncome] = useState<number>(100000);
   const [baseCurrency, setBaseCurrency] = useState<string>('USD');
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([
-    'usa',
-    'uk',
-    'germany',
-    'uae',
-    'singapore',
-    'pakistan',
-  ]);
+  const [selectedCountries, setSelectedCountries] = useState<string[]>(['usa']);
   const [selectedSubRegions, setSelectedSubRegions] = useState<Record<string, string>>({
     usa: 'California',
     canada: 'Ontario',
@@ -163,6 +156,15 @@ export const App: React.FC = () => {
     }
   };
 
+  const handleSetPrimaryCountry = (id: string) => {
+    setSelectedCountries((prev) => {
+      if (prev.length <= 1) {
+        return [id];
+      }
+      return [id, ...prev.filter((c) => c !== id)];
+    });
+  };
+
   const handleRemoveCountry = (id: string) => {
     if (selectedCountries.length > 1) {
       setSelectedCountries(selectedCountries.filter((c) => c !== id));
@@ -229,6 +231,7 @@ export const App: React.FC = () => {
                 selectedCountries={selectedCountries}
                 onAddCountry={handleAddCountry}
                 onRemoveCountry={handleRemoveCountry}
+                onSetPrimaryCountry={handleSetPrimaryCountry}
                 selectedSubRegions={selectedSubRegions}
                 onSubRegionChange={handleSubRegionChange}
                 onOpenEmbed={() => setIsEmbedOpen(true)}
@@ -318,7 +321,7 @@ export const App: React.FC = () => {
             baseCurrency={baseCurrency}
             onNavigateHome={() => handleNavigate('home')}
             onSelectCountryToCompare={(id) => {
-              handleAddCountry(id);
+              setSelectedCountries([currentCountryObj.id, id]);
               handleNavigate('home');
             }}
           />

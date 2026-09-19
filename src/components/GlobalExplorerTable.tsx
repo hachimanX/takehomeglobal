@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import type { CountryInfo } from '../types';
 import { calculateCountryTax, formatMoney, dayOfYearToDate } from '../engine/calculator';
 import { Search, ArrowUpDown, Plus, Check, ExternalLink, ArrowRight } from 'lucide-react';
+import { CountryFlag } from './CountryFlag';
 
 interface GlobalExplorerTableProps {
   countries: CountryInfo[];
@@ -141,7 +142,7 @@ export const GlobalExplorerTable: React.FC<GlobalExplorerTableProps> = ({
               : 'bg-white/[0.03] text-slate-300 hover:bg-white/[0.07]'
           }`}
         >
-          Featured (US Top)
+          Default
         </button>
         <button
           onClick={() => handleQuickFilter('lowestTax')}
@@ -256,7 +257,7 @@ export const GlobalExplorerTable: React.FC<GlobalExplorerTableProps> = ({
                   {/* Country Name & Flag */}
                   <td className="py-3.5 px-5">
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl">{r.country.flag}</span>
+                      <CountryFlag code={r.country.code} name={r.country.name} size="md" />
                       <div>
                         {onNavigateCountry ? (
                           <button

@@ -31,7 +31,7 @@ export interface SubRegion {
   standardDeduction?: number;
 }
 
-export type LanguageCode = 'en' | 'zh' | 'ja' | 'ko' | 'ur';
+export type LanguageCode = 'en' | 'zh' | 'ja' | 'ko';
 
 export interface CountryInfo {
   id: string;

@@ -3,6 +3,7 @@ import type { CountryCalculationResult } from '../types';
 import { formatMoney, dayOfYearToDate } from '../engine/calculator';
 import { DonutChart } from './DonutChart';
 import { Calendar, ShoppingCart, ChevronDown, ChevronUp, ArrowRight, X } from 'lucide-react';
+import { CountryFlag } from './CountryFlag';
 
 interface ComparisonCardsProps {
   results: CountryCalculationResult[];
@@ -86,9 +87,9 @@ export const ComparisonCards: React.FC<ComparisonCardsProps> = ({
               <div>
                 <div className="flex items-center justify-between gap-3 mb-4">
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl p-1.5 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
-                      {r.country.flag}
-                    </span>
+                    <div className="p-1.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center shrink-0">
+                      <CountryFlag code={r.country.code} name={r.country.name} size="lg" />
+                    </div>
                     <div>
                       <div className="flex items-center gap-2">
                         <h3 className="font-extrabold text-lg text-white">{r.country.name}</h3>

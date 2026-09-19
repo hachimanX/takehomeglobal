@@ -2,6 +2,7 @@ import React from 'react';
 import type { CountryCalculationResult } from '../types';
 import { formatMoney } from '../engine/calculator';
 import { Zap, PiggyBank, ShoppingCart, ArrowRight } from 'lucide-react';
+import { CountryFlag } from './CountryFlag';
 
 interface ArbitrageCardProps {
   results: CountryCalculationResult[];
@@ -45,10 +46,16 @@ export const ArbitrageCard: React.FC<ArbitrageCardProps> = ({ results, baseCurre
               <span>Direct Relocation Arbitrage</span>
             </div>
 
-            <div className="flex items-center gap-2.5 text-xl sm:text-2xl font-black text-white tracking-tight">
-              <span>{origin.country.flag} {origin.country.name}</span>
-              <ArrowRight className="w-5 h-5 text-indigo-400" />
-              <span>{destination.country.flag} {destination.country.name}</span>
+            <div className="flex items-center gap-3 text-xl sm:text-2xl font-black text-white tracking-tight flex-wrap">
+              <span className="inline-flex items-center gap-2">
+                <CountryFlag code={origin.country.code} name={origin.country.name} size="md" />
+                <span>{origin.country.name}</span>
+              </span>
+              <ArrowRight className="w-5 h-5 text-indigo-400 shrink-0" />
+              <span className="inline-flex items-center gap-2">
+                <CountryFlag code={destination.country.code} name={destination.country.name} size="md" />
+                <span>{destination.country.name}</span>
+              </span>
             </div>
 
             <p className="text-sm text-slate-300 mt-2 max-w-2xl leading-relaxed">
