@@ -1458,55 +1458,9 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
         ))}
       </div>
 
-      {/* Strategic Partner CTA Card (StartFleet for US / Wise for Global) */}
-      <div className="my-14">
-        {article.ctaType === 'startfleet' ? (
-          <div className="rounded-3xl p-7 sm:p-8 bg-gradient-to-br from-amber-600/15 via-orange-950/20 to-[#0f111a] border border-amber-500/30 backdrop-blur-xl shadow-2xl relative overflow-hidden">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-              <div className="max-w-xl">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold mb-3 uppercase tracking-wider">
-                  <Building2 className="w-3.5 h-3.5" />
-                  <span>{SITE_CONFIG.affiliates.startfleet.tag}</span>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight mb-2">
-                  {SITE_CONFIG.affiliates.startfleet.headline}
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
-                  {SITE_CONFIG.affiliates.startfleet.description}
-                </p>
-                <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-slate-400 font-medium">
-                  <span className="flex items-center gap-1">
-                    <Check className="w-3.5 h-3.5 text-amber-400" />
-                    <span>0% State Tax (WY/DE)</span>
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Check className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Guaranteed US EIN</span>
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Check className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Mercury & Relay Bank Accounts</span>
-                  </span>
-                </div>
-              </div>
-
-              <div className="shrink-0 w-full sm:w-auto text-center sm:text-right">
-                <a
-                  href={SITE_CONFIG.affiliates.startfleet.destinationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs transition-all shadow-lg shadow-amber-500/25 cursor-pointer w-full sm:w-auto"
-                >
-                  <span>{SITE_CONFIG.affiliates.startfleet.ctaText}</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-                <span className="block text-[10px] text-slate-500 mt-2">
-                  Official partner • Verified zero-travel setup
-                </span>
-              </div>
-            </div>
-          </div>
-        ) : (
+      {/* Strategic Partner CTA Card (Wise for Global) */}
+      {article.ctaType === 'wise' && (
+        <div className="my-14">
           <div className="rounded-3xl p-7 sm:p-8 bg-gradient-to-br from-emerald-600/15 via-teal-950/20 to-[#0f111a] border border-emerald-500/30 backdrop-blur-xl shadow-2xl relative overflow-hidden">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
               <div className="max-w-xl">
@@ -1552,8 +1506,8 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
               </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Interactive FAQ Accordion */}
       {article.faqs && article.faqs.length > 0 && (

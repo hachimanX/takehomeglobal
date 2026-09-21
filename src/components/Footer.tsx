@@ -140,17 +140,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   German Steuerklassen Guide
                 </button>
               </li>
-              <li>
-                <a
-                  href={SITE_CONFIG.affiliates.startfleet.destinationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1"
-                >
-                  <span>Start a US Company</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </li>
+
               <li>
                 <a
                   href={SITE_CONFIG.affiliates.wise.destinationUrl}

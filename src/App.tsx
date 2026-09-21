@@ -49,10 +49,7 @@ export const App: React.FC = () => {
       // Check for affiliate cloaked redirects
       const searchParams = new URLSearchParams(window.location.search);
       const cloakedTarget = searchParams.get('go') || window.location.hash.replace('#/go/', '').replace('#go/', '');
-      if (cloakedTarget === 'startfleet') {
-        window.location.href = SITE_CONFIG.affiliates.startfleet.destinationUrl;
-        return;
-      }
+
       if (cloakedTarget === 'wise') {
         window.location.href = SITE_CONFIG.affiliates.wise.destinationUrl;
         return;

@@ -115,7 +115,7 @@ export const AdvertisePage: React.FC<AdvertisePageProps> = ({ onNavigateHome }) 
             <span className="text-[10px] font-bold uppercase text-emerald-400">Placement C</span>
             <div className="text-sm font-bold text-white">Homepage Trusted Partner Card</div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Featured on the homepage in the curated "Recommended International Solutions" grid alongside leaders like Wise and StartFleet.
+              Featured on the homepage in the curated "Recommended International Solutions" section alongside trusted global platforms like Wise.
             </p>
           </div>
         </div>

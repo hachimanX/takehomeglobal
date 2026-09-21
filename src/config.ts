@@ -17,16 +17,17 @@ export const SITE_CONFIG = {
 
   // Partner & Affiliate Links (Cloaked via /go/:slug)
   affiliates: {
-    startfleet: {
-      name: 'StartFleet',
-      tag: 'US INCORPORATION & BANKING',
-      headline: 'Register your US LLC or C-Corp from anywhere in the world',
-      description:
-        'Designed specifically for non-US residents. Form your Delaware or Wyoming company, obtain your US EIN, and secure US business bank accounts (Mercury, Relay) with zero US travel required.',
-      destinationUrl: 'https://startfleet.io/?affp=0sfOAFhaZeMG',
-      cloakedPath: '/go/startfleet',
-      ctaText: 'Start a US Company →',
-    },
+    // StartFleet partnership (disabled until reaching 1,000+ monthly visitors):
+    // startfleet: {
+    //   name: 'StartFleet',
+    //   tag: 'US INCORPORATION & BANKING',
+    //   headline: 'Register your US LLC or C-Corp from anywhere in the world',
+    //   description:
+    //     'Designed specifically for non-US residents. Form your Delaware or Wyoming company, obtain your US EIN, and secure US business bank accounts (Mercury, Relay) with zero US travel required.',
+    //   destinationUrl: 'https://startfleet.io/?affp=0sfOAFhaZeMG',
+    //   cloakedPath: '/go/startfleet',
+    //   ctaText: 'Start a US Company →',
+    // },
     wise: {
       name: 'Wise',
       tag: 'INTERNATIONAL MULTI-CURRENCY BANKING',

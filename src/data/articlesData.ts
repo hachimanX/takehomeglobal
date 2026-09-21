@@ -28,7 +28,7 @@ export interface Article {
   toolType: 'hsa-401k' | 'cal-texas' | 'usa-uk' | 'no-income-tax' | 'europe-tax' | 'tax-freedom' | 'steuerklassen';
   relatedCountries: string[];
   relatedArticles: string[];
-  ctaType: 'startfleet' | 'wise';
+  ctaType: 'none' | 'wise';
   content: ArticleSection[];
   faqs: ArticleFaq[];
 }
@@ -54,7 +54,7 @@ export const ARTICLES: Article[] = [
     toolType: 'hsa-401k',
     relatedCountries: ['usa'],
     relatedArticles: ['california-vs-texas', 'usa-vs-uk', 'no-income-tax-states-2026'],
-    ctaType: 'startfleet',
+    ctaType: 'none',
     content: [
       {
         heading: '1. Core Terminology: Contribution Limits vs. Deduction Limits',
@@ -201,7 +201,7 @@ export const ARTICLES: Article[] = [
     toolType: 'cal-texas',
     relatedCountries: ['usa'],
     relatedArticles: ['no-income-tax-states-2026', 'hsa-401k-limits-2026', 'usa-vs-uk'],
-    ctaType: 'startfleet',
+    ctaType: 'none',
     content: [
       {
         heading: '1. What California Charges That Texas Doesn\'t',
@@ -395,7 +395,7 @@ export const ARTICLES: Article[] = [
     toolType: 'no-income-tax',
     relatedCountries: ['usa'],
     relatedArticles: ['california-vs-texas', 'hsa-401k-limits-2026', 'usa-vs-uk'],
-    ctaType: 'startfleet',
+    ctaType: 'none',
     content: [
       {
         heading: '1. The 9 States With No Wage Income Tax',
