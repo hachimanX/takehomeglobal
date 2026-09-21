@@ -343,6 +343,8 @@ export const App: React.FC = () => {
             article={currentArticleObj}
             onNavigateHome={() => handleNavigate('home')}
             onNavigateArticles={() => handleNavigate('guides')}
+            onNavigateCountry={(id) => handleNavigate('country', id)}
+            onSelectArticle={(slug) => handleNavigate('article', slug)}
           />
         )}
 
