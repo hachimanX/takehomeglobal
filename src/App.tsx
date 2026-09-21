@@ -58,26 +58,28 @@ export const App: React.FC = () => {
         return;
       }
 
-      const hash = window.location.hash.replace('#', '');
-      if (hash.startsWith('/tax-calculator/')) {
-        const countryId = hash.replace('/tax-calculator/', '').replace('/', '');
+      const rawTarget = window.location.hash.replace('#', '') || window.location.pathname;
+      const normalized = rawTarget.startsWith('/') ? rawTarget : `/${rawTarget}`;
+
+      if (normalized.startsWith('/tax-calculator/')) {
+        const countryId = normalized.replace('/tax-calculator/', '').replace(/\//g, '');
         if (COUNTRIES.some((c) => c.id === countryId)) {
           setActiveView('country');
           setViewParam(countryId);
         }
-      } else if (hash.startsWith('/compare/') || hash.startsWith('/tax-guides/')) {
-        const slug = hash.split('/').filter(Boolean).pop();
+      } else if (normalized.startsWith('/compare/') || normalized.startsWith('/tax-guides/')) {
+        const slug = normalized.split('/').filter(Boolean).pop();
         if (slug && ARTICLES.some((a) => a.slug === slug)) {
           setActiveView('article');
           setViewParam(slug);
         }
-      } else if (hash === 'about') {
+      } else if (normalized === '/about' || normalized === 'about') {
         setActiveView('about');
-      } else if (hash === 'advertise') {
+      } else if (normalized === '/advertise' || normalized === 'advertise') {
         setActiveView('advertise');
-      } else if (hash === 'contact') {
+      } else if (normalized === '/contact' || normalized === 'contact') {
         setActiveView('contact');
-      } else if (hash === 'guides' || hash === 'guides-index') {
+      } else if (normalized === '/guides' || normalized === 'guides' || normalized === '/guides-index') {
         setActiveView('guides');
       }
 
