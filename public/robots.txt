@@ -1,3 +1,4 @@
-# Disallow all indexing until articles and full content are launched
 User-agent: *
-Disallow: /
+Allow: /
+
+Sitemap: https://takehomeglobal.com/sitemap.xml
