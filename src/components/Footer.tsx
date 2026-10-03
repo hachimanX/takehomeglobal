@@ -186,6 +186,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   Affiliate Disclosure
                 </button>
               </li>
+              <li>
+                <a href="/ai-instructions" className="hover:text-emerald-400 transition-colors">
+                  AI Instructions (LLMs)
+                </a>
+              </li>
             </ul>
           </div>
         </div>
