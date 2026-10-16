@@ -1,12 +1,19 @@
 import React from 'react';
 import { Globe, ExternalLink } from 'lucide-react';
 import { SITE_CONFIG } from '../config';
+import { COUNTRIES } from '../data/taxData';
+import { ARTICLES } from '../data/articlesData';
+import { pathForView } from '../routes';
 
 interface FooterProps {
   onNavigate: (view: string, param?: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  const go = (view: string, param?: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    onNavigate(view, param);
+  };
   return (
     <footer className="border-t border-white/[0.08] bg-[#07080d] text-slate-400 text-xs pt-16 pb-12 mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
@@ -26,9 +33,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <p className="text-slate-400 leading-relaxed text-xs">
               An independent, free global take-home pay and tax comparison tool covering 35+ major economies and all 50 US states — updated for the {SITE_CONFIG.taxYear} tax year.
             </p>
-            <div className="text-[11px] text-slate-500">
-              Quietly maintained with reference-grade accuracy.
-            </div>
           </div>
 
           {/* Col 1: Calculators */}
@@ -87,22 +91,22 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </h4>
             <ul className="space-y-2 text-xs text-slate-400">
               <li>
-                <button onClick={() => onNavigate('guide', 'california-vs-texas-tax')} className="hover:text-white transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('guide', 'california-vs-texas')} className="hover:text-white transition-colors cursor-pointer">
                   California vs Texas Tax
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('guide', 'us-vs-uk-tax')} className="hover:text-white transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('guide', 'usa-vs-uk')} className="hover:text-white transition-colors cursor-pointer">
                   US vs UK Take-Home Pay
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('guide', 'no-income-tax-states')} className="hover:text-white transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('guide', 'no-income-tax-states-2026')} className="hover:text-white transition-colors cursor-pointer">
                   9 States with No Income Tax
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('guide', 'europe-low-tax-countries')} className="hover:text-white transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('guide', 'lowest-tax-countries-europe-2026')} className="hover:text-white transition-colors cursor-pointer">
                   Europe Low-Tax Havens
                 </button>
               </li>
@@ -220,6 +224,38 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             Tax Engine v2.5 · 2026 Edition
           </div>
         </div>
+
+        {/* Full directory: plain links so every page links to every calculator and guide */}
+        <nav aria-label="All calculators and guides" className="space-y-4 border-t border-white/[0.06] pt-8">
+          <div>
+            <h4 className="text-[11px] font-mono tracking-wider uppercase text-slate-200 font-bold mb-3">
+              Take-home pay calculators by country
+            </h4>
+            <ul className="flex flex-wrap gap-x-4 gap-y-2 text-xs">
+              {COUNTRIES.map((c) => (
+                <li key={c.id}>
+                  <a href={pathForView('country', c.id)} onClick={go('country', c.id)} className="hover:text-white transition-colors">
+                    {c.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-[11px] font-mono tracking-wider uppercase text-slate-200 font-bold mb-3">
+              Tax guides
+            </h4>
+            <ul className="flex flex-wrap gap-x-4 gap-y-2 text-xs">
+              {ARTICLES.map((a) => (
+                <li key={a.slug}>
+                  <a href={pathForView('article', a.slug)} onClick={go('article', a.slug)} className="hover:text-white transition-colors">
+                    {a.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
 
         {/* Legal Disclaimer Box */}
         <div className="p-4 rounded-xl bg-black/40 border border-white/[0.04] text-[11px] text-slate-400 leading-relaxed">

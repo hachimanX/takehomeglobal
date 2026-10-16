@@ -179,7 +179,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </div>
                     <button
                       onClick={() => {
-                        onNavigate('guide', 'california-vs-texas-tax');
+                        onNavigate('guide', 'california-vs-texas');
                         setOpenDropdown(null);
                       }}
                       className="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-white/[0.06] hover:text-white transition-colors flex items-center justify-between cursor-pointer"
@@ -189,7 +189,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </button>
                     <button
                       onClick={() => {
-                        onNavigate('guide', 'us-vs-uk-tax');
+                        onNavigate('guide', 'usa-vs-uk');
                         setOpenDropdown(null);
                       }}
                       className="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-white/[0.06] hover:text-white transition-colors flex items-center justify-between cursor-pointer"
@@ -199,7 +199,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </button>
                     <button
                       onClick={() => {
-                        onNavigate('guide', 'no-income-tax-states');
+                        onNavigate('guide', 'no-income-tax-states-2026');
                         setOpenDropdown(null);
                       }}
                       className="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-white/[0.06] hover:text-white transition-colors flex items-center justify-between cursor-pointer"
@@ -209,7 +209,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </button>
                     <button
                       onClick={() => {
-                        onNavigate('guide', 'europe-low-tax-countries');
+                        onNavigate('guide', 'lowest-tax-countries-europe-2026');
                         setOpenDropdown(null);
                       }}
                       className="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-white/[0.06] hover:text-white transition-colors flex items-center justify-between cursor-pointer"

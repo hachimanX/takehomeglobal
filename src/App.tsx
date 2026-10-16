@@ -21,13 +21,22 @@ import { DEFAULT_EXCHANGE_RATES, getExchangeRates } from './data/exchangeRates';
 import { calculateCountryTax } from './engine/calculator';
 import { ARTICLES } from './data/articlesData';
 import { SITE_CONFIG } from './config';
+import { parseRoute, pathForView, headFor } from './routes';
 import type { LanguageCode } from './types';
 import { BookOpen, ArrowRight } from 'lucide-react';
 
-export const App: React.FC = () => {
+function currentBrowserPath(): string {
+  if (typeof window === 'undefined') return '/';
+  const hash = window.location.hash.replace('#', '');
+  // Legacy links used #/tax-calculator/... style routes
+  return hash && hash.startsWith('/') || ['about', 'advertise', 'contact', 'guides'].includes(hash) ? hash : window.location.pathname;
+}
+
+export const App: React.FC<{ initialPath?: string }> = ({ initialPath }) => {
+  const initialRoute = useMemo(() => parseRoute(initialPath ?? currentBrowserPath()), [initialPath]);
   // Navigation Routing state
-  const [activeView, setActiveView] = useState<string>('home'); // home | about | advertise | contact | country | guides | article
-  const [viewParam, setViewParam] = useState<string>(''); // countryId or article slug
+  const [activeView, setActiveView] = useState<string>(initialRoute.view); // home | about | advertise | contact | country | guides | article
+  const [viewParam, setViewParam] = useState<string>(initialRoute.param); // countryId or article slug
   const [language, setLanguage] = useState<LanguageCode>('en');
   const [isEmbedOpen, setIsEmbedOpen] = useState<boolean>(false);
 
@@ -55,29 +64,9 @@ export const App: React.FC = () => {
         return;
       }
 
-      const rawTarget = window.location.hash.replace('#', '') || window.location.pathname;
-      const normalized = rawTarget.startsWith('/') ? rawTarget : `/${rawTarget}`;
-
-      if (normalized.startsWith('/tax-calculator/')) {
-        const countryId = normalized.replace('/tax-calculator/', '').replace(/\//g, '');
-        if (COUNTRIES.some((c) => c.id === countryId)) {
-          setActiveView('country');
-          setViewParam(countryId);
-        }
-      } else if (normalized.startsWith('/compare/') || normalized.startsWith('/tax-guides/')) {
-        const slug = normalized.split('/').filter(Boolean).pop();
-        if (slug && ARTICLES.some((a) => a.slug === slug)) {
-          setActiveView('article');
-          setViewParam(slug);
-        }
-      } else if (normalized === '/about' || normalized === 'about') {
-        setActiveView('about');
-      } else if (normalized === '/advertise' || normalized === 'advertise') {
-        setActiveView('advertise');
-      } else if (normalized === '/contact' || normalized === 'contact') {
-        setActiveView('contact');
-      } else if (normalized === '/guides' || normalized === 'guides' || normalized === '/guides-index') {
-        setActiveView('guides');
+      // Rewrite legacy #hash routes to their real path
+      if (window.location.hash && initialRoute.view !== 'home') {
+        window.history.replaceState({}, '', pathForView(initialRoute.view, initialRoute.param) + window.location.search);
       }
 
       const inc = searchParams.get('income');
@@ -98,7 +87,22 @@ export const App: React.FC = () => {
     getExchangeRates().then((rates) => {
       setExchangeRates(rates);
     });
+
+    // Back/forward buttons
+    const onPop = () => {
+      const r = parseRoute(window.location.pathname);
+      setActiveView(r.view);
+      setViewParam(r.param);
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Keep the tab title in sync with the prerendered title for each route
+  useEffect(() => {
+    document.title = headFor(pathForView(activeView, viewParam)).title;
+  }, [activeView, viewParam]);
 
   // Update URL state when on home calculator
   useEffect(() => {
@@ -121,22 +125,16 @@ export const App: React.FC = () => {
     setViewParam(param || '');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Update URL hash for bookmarking
-    if (view === 'country' && param) {
-      window.location.hash = `/tax-calculator/${param}/`;
-    } else if (view === 'article' && param) {
-      window.location.hash = `/tax-guides/${param}/`;
-    } else if (view === 'guide' && param) {
+    if (view === 'guide' && param) {
       setActiveView('article');
-      setViewParam(param);
-      window.location.hash = `/tax-guides/${param}/`;
     } else if (view === 'guides-index') {
       setActiveView('guides');
-      window.location.hash = 'guides';
-    } else if (view !== 'home') {
-      window.location.hash = view;
-    } else {
-      window.location.hash = '';
+    }
+
+    // Real paths (each one is prerendered as its own HTML file)
+    const target = pathForView(view, param);
+    if (window.location.pathname !== target) {
+      window.history.pushState({}, '', target);
     }
   };
 
