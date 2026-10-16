@@ -340,6 +340,11 @@ export const COUNTRIES: CountryInfo[] = [
     flag: '🇺🇸',
     costOfLivingAnnualUSD: 18000,
     subRegionLabel: 'State',
+    // Sources, checked 2026-10-16. Single filer, tax year 2026.
+    // Brackets + standard deduction: IRS 2026 inflation adjustments (Rev. Proc. 2025-32),
+    //   https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2026-including-amendments-from-the-one-big-beautiful-bill
+    // Social Security wage base $184,500: https://www.ssa.gov/oact/cola/cbb.html
+    // State tables (US_STATES) have not been checked against state sources yet.
     federalBrackets: [
       { threshold: 0, rate: 0.10 },
       { threshold: 12400, rate: 0.12 },
@@ -358,7 +363,7 @@ export const COUNTRIES: CountryInfo[] = [
       { name: 'Additional Medicare Tax', type: 'medicare_add', trigger: 200000, rate: 0.009 }
     ],
     subRegions: US_STATES,
-    officialSource: 'https://www.irs.gov/',
+    officialSource: 'https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2026-including-amendments-from-the-one-big-beautiful-bill',
     notes: 'IRS 2026 inflation-adjusted brackets + FICA contributions + All 50 states'
   },
   {
@@ -368,12 +373,16 @@ export const COUNTRIES: CountryInfo[] = [
     currency: 'GBP',
     flag: '🇬🇧',
     costOfLivingAnnualUSD: 16000,
+    // Sources, checked 2026-10-16. Tax year 6 Apr 2026 - 5 Apr 2027, England/Wales/NI rates (Scottish bands not modelled).
+    // Bands, £12,570 allowance, £100k taper: https://www.gov.uk/income-tax-rates
+    // Class 1 NI 8% / 2%, PT £242/wk, UEL £967/wk (annual £12,570 / £50,270):
+    //   https://www.gov.uk/government/publications/rates-and-allowances-national-insurance-contributions/rates-and-allowances-national-insurance-contributions
+    // Thresholds below are on taxable income (after the allowance): 40% from £50,270 gross, 45% above £125,140.
     federalBrackets: [
       { threshold: 0, rate: 0.20 },
       { threshold: 37700, rate: 0.40 },
-      { threshold: 112570, rate: 0.45 },
+      { threshold: 125140, rate: 0.45 },
     ],
-    standardDeduction: 12570,
     deductions: [
       { name: 'Personal Allowance', amount: 12570, taperStart: 100000, taperRate: 0.5 }
     ],
@@ -391,24 +400,38 @@ export const COUNTRIES: CountryInfo[] = [
     currency: 'EUR',
     flag: '🇩🇪',
     costOfLivingAnnualUSD: 14000,
+    // Sources, checked 2026-10-16. Tax class I, statutory health insurance, childless, no church tax.
+    // Tariff § 32a EStG from 2026 (Grundfreibetrag €12,348): https://www.gesetze-im-internet.de/estg/__32a.html
+    // Payroll rules from the BMF Programmablaufplan 2026 (Lohnsteuer2026.xml on bmf-steuerrechner.de):
+    //   €1,230 Arbeitnehmer-Pauschbetrag, €36 Sonderausgaben-Pauschbetrag, Vorsorgepauschale = pension 9.3%
+    //   + health 7.0% + half the Zusatzbeitrag + care 2.4%; Soli Freigrenze €20,350 with 11.9% phase-in.
+    // Caps €101,400 (pension/unemployment) and €69,750 (health/care): https://www.bundesregierung.de/breg-de/aktuelles/beitragsgemessungsgrenzen-2386514
+    // Average Zusatzbeitrag 2.9%: https://www.bundesgesundheitsministerium.de/beitraege
+    // The calculation uses the formula; these brackets only feed the table (the rate rises
+    // linearly from 14% to 24% and from 24% to 42% inside the first two bands).
+    incomeTaxFormula: 'DE_32A_2026',
     federalBrackets: [
-      { threshold: 0, rate: 0.14 },
-      { threshold: 17442, rate: 0.24 },
-      { threshold: 68480, rate: 0.42 },
-      { threshold: 277826, rate: 0.45 },
+      { threshold: 0, rate: 0 },
+      { threshold: 12348, rate: 0.14 },
+      { threshold: 17799, rate: 0.24 },
+      { threshold: 69878, rate: 0.42 },
+      { threshold: 277825, rate: 0.45 },
     ],
-    standardDeduction: 12348, // Grundfreibetrag
+    deductions: [
+      { name: 'Arbeitnehmer-Pauschbetrag', amount: 1230 },
+      { name: 'Sonderausgaben-Pauschbetrag', amount: 36 },
+    ],
     socialContributions: [
-      { name: 'Rentenversicherung (Pension)', rate: 0.093, cap: 101400 },
-      { name: 'Krankenversicherung (Health)', rate: 0.0875, cap: 69750 },
-      { name: 'Pflegeversicherung (Care)', rate: 0.024, cap: 69750 },
+      { name: 'Rentenversicherung (Pension)', rate: 0.093, cap: 101400, deductibleRate: 0.093 },
+      { name: 'Krankenversicherung (Health)', rate: 0.0875, cap: 69750, deductibleRate: 0.0845 },
+      { name: 'Pflegeversicherung (Care)', rate: 0.024, cap: 69750, deductibleRate: 0.024 },
       { name: 'Arbeitslosenversicherung (Unemployment)', rate: 0.013, cap: 101400 },
     ],
     specialRules: [
-      { name: 'Solidaritätszuschlag (Solidarity)', type: 'solidarity', trigger: 20350, rate: 0.055, isPercentageOfTax: true }
+      { name: 'Solidaritätszuschlag (Solidarity)', type: 'solidarity', trigger: 20350, rate: 0.055, isPercentageOfTax: true, reliefRate: 0.119 }
     ],
-    officialSource: 'https://www.bundesfinanzministerium.de',
-    notes: 'Einkommensteuer with Grundfreibetrag €12,348 + complete Sozialversicherung.'
+    officialSource: 'https://www.gesetze-im-internet.de/estg/__32a.html',
+    notes: '2026 income tax formula (§ 32a EStG, Grundfreibetrag €12,348), Soli with phase-in, employee social contributions. Tax class I, childless, no church tax.'
   },
   {
     id: 'canada',
@@ -418,22 +441,58 @@ export const COUNTRIES: CountryInfo[] = [
     flag: '🇨🇦',
     costOfLivingAnnualUSD: 15000,
     subRegionLabel: 'Province',
+    // Sources, checked 2026-10-16. Tax year 2026.
+    // Federal + provincial brackets, basic personal amounts, Ontario surtax and Health Premium, CPP/CPP2/EI:
+    //   CRA T4127 Payroll Deductions Formulas, 122nd edition (Jan 2026),
+    //   https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/t4127-payroll-deductions-formulas/t4127-jan/t4127-jan-payroll-deductions-formulas-computer-programs.html
+    // Quebec brackets, BPA $18,952, QPIP 0.43%: https://www.revenuquebec.ca/en/businesses/source-deductions-and-employer-contributions/employers-principal-changes-for-2026/
+    // Personal amounts are credits at the lowest rate (14% federal), not deductions. Enhanced CPP is
+    // deducted from income; base CPP and EI are credited. Not modelled: Ontario/BC low-income tax
+    // reductions, Quebec's own deductions and credits beyond the basic amount.
     federalBrackets: [
-      { threshold: 0, rate: 0.15 },
+      { threshold: 0, rate: 0.14 },
       { threshold: 58523, rate: 0.205 },
       { threshold: 117045, rate: 0.26 },
       { threshold: 181440, rate: 0.29 },
       { threshold: 258482, rate: 0.33 },
     ],
-    standardDeduction: 16452,
+    taxCredits: [
+      {
+        name: 'Basic personal amount',
+        amount: 16452,
+        atLowestRate: true,
+        phaseOuts: [{ start: 181440, end: 258482, rate: 1623 / 77042 }],
+        minAmount: 14829,
+      },
+      { name: 'Canada employment amount', amount: 1501, atLowestRate: true },
+    ],
     socialContributions: [
-      { name: 'CPP (Canada Pension Plan)', rate: 0.0595, floor: 3500, cap: 74600 },
-      { name: 'EI (Employment Insurance)', rate: 0.0163, cap: 68900 },
+      { name: 'CPP (Canada Pension Plan)', rate: 0.0595, floor: 3500, cap: 74600, deductibleRate: 0.01, creditRate: 0.0495 },
+      { name: 'CPP2 (Second additional CPP)', rate: 0.04, floor: 74600, cap: 85000, deductibleRate: 0.04 },
+      { name: 'EI (Employment Insurance)', rate: 0.0163, cap: 68900, creditRate: 0.0163 },
     ],
     subRegions: {
       'Ontario': {
         name: 'Ontario',
-        standardDeduction: 12989,
+        useNationalTaxableIncome: true,
+        applySocialCredits: true,
+        taxCredits: [{ name: 'Ontario basic personal amount', amount: 12989, atLowestRate: true }],
+        surtaxes: [
+          { threshold: 5818, rate: 0.20 },
+          { threshold: 7446, rate: 0.36 },
+        ],
+        levies: [
+          {
+            name: 'Ontario Health Premium',
+            steps: [
+              { from: 20000, base: 0, rate: 0.06, max: 300 },
+              { from: 36000, base: 300, rate: 0.06, max: 450 },
+              { from: 48000, base: 450, rate: 0.25, max: 600 },
+              { from: 72000, base: 600, rate: 0.25, max: 750 },
+              { from: 200000, base: 750, rate: 0.25, max: 900 },
+            ],
+          },
+        ],
         brackets: [
           { threshold: 0, rate: 0.0505 },
           { threshold: 53891, rate: 0.0915 },
@@ -444,7 +503,9 @@ export const COUNTRIES: CountryInfo[] = [
       },
       'British Columbia': {
         name: 'British Columbia',
-        standardDeduction: 13216,
+        useNationalTaxableIncome: true,
+        applySocialCredits: true,
+        taxCredits: [{ name: 'BC basic personal amount', amount: 13216, atLowestRate: true }],
         brackets: [
           { threshold: 0, rate: 0.0506 },
           { threshold: 50363, rate: 0.077 },
@@ -457,7 +518,17 @@ export const COUNTRIES: CountryInfo[] = [
       },
       'Quebec': {
         name: 'Quebec',
-        standardDeduction: 18952,
+        useNationalTaxableIncome: true,
+        taxCredits: [{ name: 'Quebec basic personal amount', amount: 18952, atLowestRate: true }],
+        // Quebec abatement: 16.5% of basic federal tax is refunded to Quebec residents
+        nationalTaxAbatement: 0.165,
+        // QPP replaces CPP, EI is lower in Quebec, plus QPIP. QPP base/enhanced split is approximate.
+        socialContributions: [
+          { name: 'QPP (Quebec Pension Plan)', rate: 0.063, floor: 3500, cap: 74600, deductibleRate: 0.01, creditRate: 0.053 },
+          { name: 'QPP2 (Second additional QPP)', rate: 0.04, floor: 74600, cap: 85000, deductibleRate: 0.04 },
+          { name: 'EI (Employment Insurance, Quebec rate)', rate: 0.013, cap: 68900, creditRate: 0.013 },
+          { name: 'QPIP (Parental Insurance)', rate: 0.0043, cap: 103000, creditRate: 0.0043 },
+        ],
         brackets: [
           { threshold: 0, rate: 0.14 },
           { threshold: 54345, rate: 0.19 },
@@ -467,7 +538,9 @@ export const COUNTRIES: CountryInfo[] = [
       },
       'Alberta': {
         name: 'Alberta',
-        standardDeduction: 22769,
+        useNationalTaxableIncome: true,
+        applySocialCredits: true,
+        taxCredits: [{ name: 'Alberta basic personal amount', amount: 22769, atLowestRate: true }],
         brackets: [
           { threshold: 0, rate: 0.08 },
           { threshold: 61200, rate: 0.10 },
@@ -479,7 +552,16 @@ export const COUNTRIES: CountryInfo[] = [
       },
       'Manitoba': {
         name: 'Manitoba',
-        standardDeduction: 15780,
+        useNationalTaxableIncome: true,
+        applySocialCredits: true,
+        taxCredits: [
+          {
+            name: 'Manitoba basic personal amount',
+            amount: 15780,
+            atLowestRate: true,
+            phaseOuts: [{ start: 200000, end: 400000, rate: 15780 / 200000 }],
+          },
+        ],
         brackets: [
           { threshold: 0, rate: 0.108 },
           { threshold: 47000, rate: 0.1275 },
@@ -488,7 +570,9 @@ export const COUNTRIES: CountryInfo[] = [
       },
       'Saskatchewan': {
         name: 'Saskatchewan',
-        standardDeduction: 20381,
+        useNationalTaxableIncome: true,
+        applySocialCredits: true,
+        taxCredits: [{ name: 'Saskatchewan basic personal amount', amount: 20381, atLowestRate: true }],
         brackets: [
           { threshold: 0, rate: 0.105 },
           { threshold: 54532, rate: 0.125 },
@@ -497,7 +581,9 @@ export const COUNTRIES: CountryInfo[] = [
       },
       'Nova Scotia': {
         name: 'Nova Scotia',
-        standardDeduction: 11932,
+        useNationalTaxableIncome: true,
+        applySocialCredits: true,
+        taxCredits: [{ name: 'Nova Scotia basic personal amount', amount: 11932, atLowestRate: true }],
         brackets: [
           { threshold: 0, rate: 0.0879 },
           { threshold: 30995, rate: 0.1495 },
@@ -508,7 +594,9 @@ export const COUNTRIES: CountryInfo[] = [
       },
       'New Brunswick': {
         name: 'New Brunswick',
-        standardDeduction: 13664,
+        useNationalTaxableIncome: true,
+        applySocialCredits: true,
+        taxCredits: [{ name: 'New Brunswick basic personal amount', amount: 13664, atLowestRate: true }],
         brackets: [
           { threshold: 0, rate: 0.094 },
           { threshold: 52333, rate: 0.14 },
@@ -517,8 +605,8 @@ export const COUNTRIES: CountryInfo[] = [
         ]
       },
     },
-    officialSource: 'https://www.canada.ca',
-    notes: 'CRA Federal + Provincial schedules + CPP/EI.'
+    officialSource: 'https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/t4127-payroll-deductions-formulas/t4127-jan/t4127-jan-payroll-deductions-formulas-computer-programs.html',
+    notes: 'CRA 2026 federal and provincial rates, personal amounts as 14% credits, CPP/CPP2/EI.'
   },
   {
     id: 'australia',
@@ -527,18 +615,34 @@ export const COUNTRIES: CountryInfo[] = [
     currency: 'AUD',
     flag: '🇦🇺',
     costOfLivingAnnualUSD: 17000,
+    // Sources, checked 2026-10-16. Resident, income year 1 Jul 2026 - 30 Jun 2027.
+    // Rates (15% bottom rate from 2026-27): https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents
+    // LITO $700, tapering to nil at $66,667: https://www.ato.gov.au/individuals-and-families/income-deductions-offsets-and-records/tax-offsets/low-income-tax-offset
+    // Medicare levy 2%, shaded in at 10c per $ above the single threshold ($28,011 is the 2025-26
+    // figure; 2026-27 not yet published): https://www.ato.gov.au/individuals-and-families/medicare-and-private-health-insurance/medicare-levy/medicare-levy-reduction/medicare-levy-reduction-for-low-income-earners
+    // The first $18,200 is a 0% band of taxable income, not a deduction.
     federalBrackets: [
-      { threshold: 0, rate: 0.16 },
+      { threshold: 0, rate: 0 },
+      { threshold: 18200, rate: 0.15 },
       { threshold: 45000, rate: 0.30 },
       { threshold: 135000, rate: 0.37 },
       { threshold: 190000, rate: 0.45 },
     ],
-    standardDeduction: 18200,
-    socialContributions: [
-      { name: 'Medicare Levy', rate: 0.02, floor: 26000 },
+    taxCredits: [
+      {
+        name: 'Low income tax offset',
+        amount: 700,
+        phaseOuts: [
+          { start: 37500, end: 45000, rate: 0.05 },
+          { start: 45000, rate: 0.015 },
+        ],
+      },
     ],
-    officialSource: 'https://www.ato.gov.au',
-    notes: 'ATO Stage 3 tax rates + 2% Medicare levy.'
+    socialContributions: [
+      { name: 'Medicare Levy', rate: 0.02, floor: 28011, shadeInRate: 0.10 },
+    ],
+    officialSource: 'https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents',
+    notes: 'ATO 2026-27 resident rates, low income tax offset, 2% Medicare levy with low-income shade-in.'
   },
   {
     id: 'uae',
@@ -547,9 +651,12 @@ export const COUNTRIES: CountryInfo[] = [
     currency: 'AED',
     flag: '🇦🇪',
     costOfLivingAnnualUSD: 24000,
+    // Sources, checked 2026-10-16. No income tax on individuals: https://u.ae/en/information-and-services/finance-and-investment/taxation
+    // Salaries are outside the corporate tax law (FTA guide "Taxation of Natural Persons").
+    // UAE/GCC nationals pay pension contributions (GPSSA); not modelled, the figures are for expats.
     federalBrackets: [{ threshold: 0, rate: 0 }],
     socialContributions: [],
-    officialSource: 'https://tax.gov.ae/',
+    officialSource: 'https://u.ae/en/information-and-services/finance-and-investment/taxation',
     notes: '0% personal income tax, 0% social security for foreign expatriates.'
   },
   {
@@ -588,26 +695,32 @@ export const COUNTRIES: CountryInfo[] = [
     currency: 'CHF',
     flag: '🇨🇭',
     costOfLivingAnnualUSD: 23000,
+    // Sources, checked 2026-10-16. Single taxpayer, tax year 2026.
+    // Federal direct tax, singles tariff 2026 (ESTV Form. 58c): https://www.estv.admin.ch/dam/de/sd-web/gnde9CmEsalK/dbst-tairfe-58c-2026-dfi.pdf
+    //   Above CHF 793,900 the whole income is taxed at 11.5%; the 11.5% band reproduces that.
+    // AHV/IV/EO 5.3% and ALV 1.1% up to CHF 148,200 (employee shares): https://www.ahv-iv.ch/p/2.01.d
+    // NOT VERIFIED: the cantonal/communal line is a flat 13% estimate, not the Zurich tariff.
+    //   Occupational pension (BVG) and accident insurance are not modelled.
     federalBrackets: [
       { threshold: 0, rate: 0 },
       { threshold: 15200, rate: 0.0077 },
-      { threshold: 33300, rate: 0.0088 },
-      { threshold: 43600, rate: 0.0264 },
-      { threshold: 58100, rate: 0.0297 },
-      { threshold: 76300, rate: 0.0594 },
+      { threshold: 33200, rate: 0.0088 },
+      { threshold: 43500, rate: 0.0264 },
+      { threshold: 58000, rate: 0.0297 },
+      { threshold: 76200, rate: 0.0594 },
       { threshold: 82100, rate: 0.066 },
-      { threshold: 109000, rate: 0.088 },
-      { threshold: 141600, rate: 0.11 },
-      { threshold: 185200, rate: 0.132 },
-      { threshold: 794100, rate: 0.115 },
+      { threshold: 108900, rate: 0.088 },
+      { threshold: 141500, rate: 0.11 },
+      { threshold: 185100, rate: 0.132 },
+      { threshold: 793900, rate: 0.115 },
     ],
     socialContributions: [
-      { name: 'AVS / AI / APG (1st Pillar)', rate: 0.053 },
-      { name: 'AC (Unemployment)', rate: 0.011, cap: 148200 },
-      { name: 'Cantonal/Communal Tax (Avg ~13%)', rate: 0.13 },
+      { name: 'AVS / AI / APG (1st Pillar)', rate: 0.053, deductibleRate: 0.053 },
+      { name: 'AC (Unemployment)', rate: 0.011, cap: 148200, deductibleRate: 0.011 },
+      { name: 'Cantonal/Communal Tax (estimate, ~13%)', rate: 0.13 },
     ],
-    officialSource: 'https://www.estv.admin.ch',
-    notes: 'Federal direct tax + Cantonal/Communal average + AVS.'
+    officialSource: 'https://www.estv.admin.ch/dam/de/sd-web/gnde9CmEsalK/dbst-tairfe-58c-2026-dfi.pdf',
+    notes: 'Federal direct tax (2026 singles tariff) + AHV/ALV + a flat estimate for cantonal and communal tax.'
   },
   {
     id: 'ireland',
@@ -840,6 +953,13 @@ export const COUNTRIES: CountryInfo[] = [
     currency: 'INR',
     flag: '🇮🇳',
     costOfLivingAnnualUSD: 5000,
+    // Sources, checked 2026-10-16. New regime, resident individual under 60, FY 2026-27.
+    // Slabs, ₹75,000 standard deduction, s.87A rebate up to ₹60,000 for income to ₹12 lakh, surcharge
+    //   10/15/25% above ₹50 lakh / ₹1 crore / ₹2 crore: https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/itr-2/itr-2-faqs
+    //   and https://www.incometaxindia.gov.in/w/tax-rates%E2%80%8B
+    // Budget 2026-27 made no change to personal rates (PIB budget summary, Feb 2026).
+    // EPF: 12% of basic pay up to the ₹15,000/month wage ceiling; gross is treated as basic pay.
+    // Not modelled: marginal relief on the surcharge.
     federalBrackets: [
       { threshold: 0, rate: 0 },
       { threshold: 400000, rate: 0.05 },
@@ -850,14 +970,18 @@ export const COUNTRIES: CountryInfo[] = [
       { threshold: 2400000, rate: 0.30 },
     ],
     standardDeduction: 75000,
+    taxRebate: { incomeLimit: 1200000, maxRebate: 60000, marginalRelief: true },
     socialContributions: [
-      { name: 'EPF (Employee Provident Fund)', rate: 0.12, cap: 1800000 }
+      { name: 'EPF (Employee Provident Fund)', rate: 0.12, cap: 180000 }
     ],
     specialRules: [
-      { name: 'Health & Education Cess (4%)', type: 'cess', trigger: 0, rate: 0.04, isPercentageOfTax: true }
+      { name: 'Surcharge (10% above ₹50 lakh)', type: 'surcharge', trigger: 5000000, rate: 0.10, isPercentageOfTax: true, triggerBasis: 'income' },
+      { name: 'Surcharge (15% above ₹1 crore)', type: 'surcharge', trigger: 10000000, rate: 0.05, isPercentageOfTax: true, triggerBasis: 'income' },
+      { name: 'Surcharge (25% above ₹2 crore)', type: 'surcharge', trigger: 20000000, rate: 0.10, isPercentageOfTax: true, triggerBasis: 'income' },
+      { name: 'Health & Education Cess (4%)', type: 'cess', trigger: 0, rate: 0.04, isPercentageOfTax: true, compound: true }
     ],
-    officialSource: 'https://incometaxindia.gov.in',
-    notes: 'New Tax Regime (FY 2025-26): Standard deduction ₹75,000 + 4% cess.'
+    officialSource: 'https://www.incometaxindia.gov.in/w/tax-rates%E2%80%8B',
+    notes: 'New Tax Regime (FY 2026-27): ₹75,000 standard deduction, no tax up to ₹12 lakh after the s.87A rebate, surcharge, 4% cess.'
   },
   {
     id: 'pakistan',
@@ -866,23 +990,28 @@ export const COUNTRIES: CountryInfo[] = [
     currency: 'PKR',
     flag: '🇵🇰',
     costOfLivingAnnualUSD: 4800,
+    // Sources, checked 2026-10-16. Salaried individual, tax year 2027 (1 Jul 2026 - 30 Jun 2027).
+    // Slabs: FBR Withholding Tax Rate Card TY2027 (updated to Finance Act 2026), section 149,
+    //   https://download1.fbr.gov.pk/Docs/202681113864992WithholdingTaxRatesCard2027.pdf
+    // Salaried surcharge abolished by Finance Act 2026 (amendment to s.4AB),
+    //   https://download1.fbr.gov.pk/Docs/20266291261044366FinanceAct2026.pdf
+    // NOT VERIFIED: the EOBI line (employee pays 1% of the minimum wage, not of salary).
     federalBrackets: [
       { threshold: 0, rate: 0 },
-      { threshold: 600000, rate: 0.05 },
-      { threshold: 1200000, rate: 0.15 },
-      { threshold: 2200000, rate: 0.25 },
-      { threshold: 3200000, rate: 0.30 },
-      { threshold: 4100000, rate: 0.35 },
+      { threshold: 600000, rate: 0.01 },
+      { threshold: 1200000, rate: 0.11 },
+      { threshold: 2200000, rate: 0.20 },
+      { threshold: 3200000, rate: 0.25 },
+      { threshold: 4100000, rate: 0.29 },
+      { threshold: 5600000, rate: 0.32 },
+      { threshold: 7000000, rate: 0.35 },
     ],
     socialContributions: [
       { name: 'EOBI (Old-Age Benefits)', rate: 0.01, cap: 18000 }
     ],
-    specialRules: [
-      { name: 'High-Income Surcharge (10%)', type: 'surcharge', trigger: 10000000, rate: 0.10, isPercentageOfTax: true }
-    ],
-    officialSource: 'https://fbr.gov.pk',
-    notes: 'FBR Tax Year 2025/2026 salaried slabs (Finance Act 2024): 0% up to ₨600k, progressive to 35% + 10% surcharge on taxable income > ₨10M.',
-    overviewText: 'Pakistan operates a progressive income tax system administered by the Federal Board of Revenue (FBR). For salaried individuals, tax rates range from 0% up to 35% with a 10% surcharge on taxable income exceeding ₨10 million.',
+    officialSource: 'https://download1.fbr.gov.pk/Docs/202681113864992WithholdingTaxRatesCard2027.pdf',
+    notes: 'FBR tax year 2027 salaried slabs (Finance Act 2026): 0% up to ₨600k, rising to 35% above ₨7M. No surcharge for salaried individuals.',
+    overviewText: 'Pakistan operates a progressive income tax system administered by the Federal Board of Revenue (FBR). For salaried individuals in tax year 2027, rates run from 0% on the first ₨600,000 to 35% on income above ₨7 million. The Finance Act 2026 removed the surcharge on salaried income above ₨10 million.',
     residencyRuleText: 'An individual is considered a tax resident of Pakistan if physically present in Pakistan for a period of, or periods amounting in aggregate to, 183 days or more in the tax year (July 1 to June 30).',
     deductionsText: 'Salaried individuals benefit from a non-taxable basic slab up to ₨600,000 annually. Deductions and tax credits are available for charitable donations, approved pension funds, and medical insurance schemes.',
     expatIncentivesText: 'Under the Income Tax Ordinance, specialized tax incentives exist for IT and software export freelancers and startups registered with the Pakistan Software Export Board (PSEB).'

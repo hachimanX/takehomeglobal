@@ -1,4 +1,57 @@
-import type { CountryInfo, CountryCalculationResult, TaxBracket } from '../types';
+import type {
+  CountryInfo,
+  CountryCalculationResult,
+  SocialContribution,
+  SteppedLevy,
+  TaxBracket,
+  TaxCredit,
+} from '../types';
+
+/**
+ * German income tax tariff, § 32a Abs. 1 EStG as in force from Veranlagungszeitraum 2026
+ * https://www.gesetze-im-internet.de/estg/__32a.html
+ */
+export function germanIncomeTax2026(zvE: number): number {
+  const x = Math.floor(zvE);
+  if (x <= 12348) return 0;
+  if (x <= 17799) {
+    const y = (x - 12348) / 10000;
+    return Math.floor((914.51 * y + 1400) * y);
+  }
+  if (x <= 69878) {
+    const z = (x - 17799) / 10000;
+    return Math.floor((173.1 * z + 2397) * z + 1034.87);
+  }
+  if (x <= 277825) return Math.floor(0.42 * x - 11135.63);
+  return Math.floor(0.45 * x - 19470.38);
+}
+
+function lowestRate(brackets: TaxBracket[]): number {
+  const rates = brackets.map((b) => b.rate).filter((r) => r > 0);
+  return rates.length ? Math.min(...rates) : 0;
+}
+
+function contributionBase(contrib: SocialContribution, income: number): number {
+  if (contrib.floor && income < contrib.floor) return 0;
+  let base = contrib.cap ? Math.min(income, contrib.cap) : income;
+  if (contrib.floor && contrib.shadeInRate === undefined) base -= contrib.floor;
+  return Math.max(0, base);
+}
+
+function creditValue(credit: TaxCredit, income: number, lowest: number): number {
+  let amount = credit.amount;
+  for (const p of credit.phaseOuts ?? []) {
+    if (income > p.start) amount -= (Math.min(income, p.end ?? Infinity) - p.start) * p.rate;
+  }
+  amount = Math.max(credit.minAmount || 0, amount);
+  return credit.atLowestRate ? amount * lowest : amount;
+}
+
+function steppedLevy(levy: SteppedLevy, income: number): number {
+  let step: SteppedLevy['steps'][number] | undefined;
+  for (const s of levy.steps) if (income > s.from) step = s;
+  return step ? Math.min(step.max, step.base + step.rate * (income - step.from)) : 0;
+}
 
 /**
  * Calculates progressive tax across standard marginal brackets
@@ -53,8 +106,28 @@ export function calculateCountryTax(
     return createEmptyResult(country, grossLocal, grossUSD, selectedSubRegion);
   }
 
-  // 1. Calculate Deductions & Allowances
-  let totalDeductions = country.standardDeduction || 0;
+  const region =
+    selectedSubRegion && country.subRegions ? country.subRegions[selectedSubRegion] : undefined;
+
+  // 1. Social Security & Mandatory Contributions (first, because some are tax-deductible or credited)
+  let socialContributions = 0;
+  let deductibleContributions = 0;
+  let creditableContributions = 0;
+
+  for (const contrib of region?.socialContributions ?? country.socialContributions) {
+    const base = contributionBase(contrib, grossLocal);
+    if (base <= 0) continue;
+    const amount =
+      contrib.shadeInRate !== undefined
+        ? Math.min(base * contrib.rate, contrib.shadeInRate * (grossLocal - (contrib.floor || 0)))
+        : base * contrib.rate;
+    socialContributions += amount;
+    deductibleContributions += base * (contrib.deductibleRate || 0);
+    creditableContributions += base * (contrib.creditRate || 0);
+  }
+
+  // 2. Deductions & Allowances
+  let totalDeductions = (country.standardDeduction || 0) + deductibleContributions;
 
   if (country.deductions && country.deductions.length > 0) {
     for (const rule of country.deductions) {
@@ -71,40 +144,63 @@ export function calculateCountryTax(
   // Taxable Federal Income
   const taxableFederalIncome = Math.max(0, grossLocal - totalDeductions);
 
-  // 2. Federal / National Income Tax
-  const { tax: federalTax, marginalRate } = calculateProgressiveTax(
-    taxableFederalIncome,
-    country.federalBrackets
-  );
-
-  // 3. Sub-region (State / Provincial) Tax
-  let stateTax = 0;
-  if (selectedSubRegion && country.subRegions && country.subRegions[selectedSubRegion]) {
-    const region = country.subRegions[selectedSubRegion];
-    const stateDeduction = region.standardDeduction || 0;
-    const taxableStateIncome = Math.max(0, grossLocal - stateDeduction);
-    const { tax } = calculateProgressiveTax(taxableStateIncome, region.brackets);
-    stateTax = tax;
+  // 3. Federal / National Income Tax, after credits and rebates
+  let federalTax: number;
+  let marginalRate: number;
+  if (country.incomeTaxFormula === 'DE_32A_2026') {
+    federalTax = germanIncomeTax2026(taxableFederalIncome);
+    marginalRate = (germanIncomeTax2026(taxableFederalIncome + 100) - federalTax) / 100;
+  } else {
+    ({ tax: federalTax, marginalRate } = calculateProgressiveTax(
+      taxableFederalIncome,
+      country.federalBrackets
+    ));
   }
 
-  // 4. Social Security & Mandatory Contributions
-  let socialContributions = 0;
-  const socialBreakdownItems: { name: string; amount: number }[] = [];
+  const nationalLowestRate = lowestRate(country.federalBrackets);
+  let federalCredits = creditableContributions * nationalLowestRate;
+  for (const credit of country.taxCredits ?? []) {
+    federalCredits += creditValue(credit, grossLocal, nationalLowestRate);
+  }
+  federalTax = Math.max(0, federalTax - federalCredits);
 
-  for (const contrib of country.socialContributions) {
-    let base = grossLocal;
-    if (contrib.floor && grossLocal < contrib.floor) {
-      continue;
+  if (country.taxRebate) {
+    const { incomeLimit, maxRebate, marginalRelief } = country.taxRebate;
+    if (taxableFederalIncome <= incomeLimit) {
+      federalTax = Math.max(0, federalTax - maxRebate);
+    } else if (marginalRelief) {
+      federalTax = Math.min(federalTax, taxableFederalIncome - incomeLimit);
     }
-    if (contrib.cap && grossLocal > contrib.cap) {
-      base = contrib.cap;
+  }
+
+  if (region?.nationalTaxAbatement) {
+    federalTax *= 1 - region.nationalTaxAbatement;
+  }
+
+  // 4. Sub-region (State / Provincial) Tax
+  let stateTax = 0;
+  if (region) {
+    const taxableStateIncome = region.useNationalTaxableIncome
+      ? taxableFederalIncome
+      : Math.max(0, grossLocal - (region.standardDeduction || 0));
+    stateTax = calculateProgressiveTax(taxableStateIncome, region.brackets).tax;
+
+    const regionLowestRate = lowestRate(region.brackets);
+    let regionCredits = region.applySocialCredits ? creditableContributions * regionLowestRate : 0;
+    for (const credit of region.taxCredits ?? []) {
+      regionCredits += creditValue(credit, grossLocal, regionLowestRate);
     }
-    if (contrib.floor) {
-      base = base - contrib.floor;
+    stateTax = Math.max(0, stateTax - regionCredits);
+
+    let surtax = 0;
+    for (const s of region.surtaxes ?? []) {
+      if (stateTax > s.threshold) surtax += (stateTax - s.threshold) * s.rate;
     }
-    const amount = base * contrib.rate;
-    socialContributions += amount;
-    socialBreakdownItems.push({ name: contrib.name, amount });
+    stateTax += surtax;
+
+    for (const levy of region.levies ?? []) {
+      stateTax += steppedLevy(levy, taxableStateIncome);
+    }
   }
 
   // 5. Special Rules & Surcharges
@@ -112,8 +208,14 @@ export function calculateCountryTax(
   if (country.specialRules) {
     for (const rule of country.specialRules) {
       if (rule.isPercentageOfTax) {
-        if (federalTax > rule.trigger) {
-          specialTaxes += federalTax * rule.rate;
+        const baseTax = rule.compound ? federalTax + specialTaxes : federalTax;
+        const measured = rule.triggerBasis === 'income' ? grossLocal : baseTax;
+        if (measured > rule.trigger) {
+          let charge = baseTax * rule.rate;
+          if (rule.reliefRate !== undefined) {
+            charge = Math.min(charge, (baseTax - rule.trigger) * rule.reliefRate);
+          }
+          specialTaxes += charge;
         }
       } else {
         if (grossLocal > rule.trigger) {
