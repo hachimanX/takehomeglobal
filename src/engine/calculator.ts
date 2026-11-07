@@ -164,6 +164,8 @@ export function calculateCountryTax(
   }
   federalTax = Math.max(0, federalTax - federalCredits);
 
+  // Rebate before cess. For India, cess is a later rule and is not folded into the cap
+  // (Finance Bill 2026 memorandum: no marginal relief on the health and education cess).
   if (country.taxRebate) {
     const { incomeLimit, maxRebate, marginalRelief } = country.taxRebate;
     if (taxableFederalIncome <= incomeLimit) {

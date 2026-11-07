@@ -8,6 +8,8 @@ import { GlobalExplorerTable } from './components/GlobalExplorerTable';
 import { AffiliateBanners } from './components/AffiliateBanners';
 import { FaqSection } from './components/FaqSection';
 import { AboutPage } from './components/AboutPage';
+import { PrivacyPage } from './components/PrivacyPage';
+import { ConsentBanner } from './components/ConsentBanner';
 import { AdvertisePage } from './components/AdvertisePage';
 import { ContactPage } from './components/ContactPage';
 import { CountryHubPage } from './components/CountryHubPage';
@@ -99,9 +101,25 @@ export const App: React.FC<{ initialPath?: string }> = ({ initialPath }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Keep the tab title in sync with the prerendered title for each route
+  // Keep title, description, and canonical on the clean path (no query string).
   useEffect(() => {
-    document.title = headFor(pathForView(activeView, viewParam)).title;
+    const path = pathForView(activeView, viewParam);
+    const head = headFor(path);
+    document.title = head.title;
+    let description = document.querySelector('meta[name="description"]');
+    if (!description) {
+      description = document.createElement('meta');
+      description.setAttribute('name', 'description');
+      document.head.appendChild(description);
+    }
+    description.setAttribute('content', head.description);
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', `${SITE_CONFIG.siteUrl}${path}`);
   }, [activeView, viewParam]);
 
   // Update URL state when on home calculator
@@ -260,21 +278,29 @@ export const App: React.FC<{ initialPath?: string }> = ({ initialPath }) => {
                       Popular Tax Guides & Country Studies
                     </h3>
                   </div>
-                  <button
-                    onClick={() => handleNavigate('guides-index')}
-                    className="text-xs text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1 cursor-pointer"
+                  <a
+                    href={pathForView('guides')}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigate('guides-index');
+                    }}
+                    className="text-xs text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1"
                   >
                     <span>View all guides</span>
                     <ArrowRight className="w-3 h-3" />
-                  </button>
+                  </a>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                   {ARTICLES.slice(0, 4).map((art) => (
-                    <button
+                    <a
                       key={art.slug}
-                      onClick={() => handleNavigate('article', art.slug)}
-                      className="p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] text-left transition-all group cursor-pointer"
+                      href={pathForView('article', art.slug)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleNavigate('article', art.slug);
+                      }}
+                      className="p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] text-left transition-all group"
                     >
                       <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 block mb-1">
                         {art.category}
@@ -285,7 +311,7 @@ export const App: React.FC<{ initialPath?: string }> = ({ initialPath }) => {
                       <span className="text-[11px] text-slate-500 mt-2 block">
                         {art.readTime}
                       </span>
-                    </button>
+                    </a>
                   ))}
                 </div>
               </div>
@@ -345,7 +371,11 @@ export const App: React.FC<{ initialPath?: string }> = ({ initialPath }) => {
 
         {/* VIEW: ABOUT PAGE */}
         {activeView === 'about' && (
-          <AboutPage onNavigateHome={() => handleNavigate('home')} />
+          <AboutPage onNavigateHome={() => handleNavigate('home')} onNavigate={handleNavigate} />
+        )}
+
+        {activeView === 'privacy' && (
+          <PrivacyPage onNavigateHome={() => handleNavigate('home')} onNavigate={handleNavigate} />
         )}
 
         {/* VIEW: ADVERTISE PAGE */}
@@ -366,6 +396,8 @@ export const App: React.FC<{ initialPath?: string }> = ({ initialPath }) => {
         defaultCountry={selectedCountries[0]}
         defaultCurrency={baseCurrency}
       />
+
+      <ConsentBanner />
 
       {/* Expanded Multi-Column Footer with Trust Badges */}
       <Footer onNavigate={handleNavigate} />
