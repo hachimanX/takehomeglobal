@@ -126,10 +126,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             {/* Sources Citation */}
             <div className="text-xs text-slate-400 pt-1">
               <span className="text-slate-500 font-semibold uppercase text-[10px] tracking-wider block mb-1">
-                Official Statutory Sources:
+                Reference pages, not a filing source:
               </span>
               <span className="text-slate-400 font-medium">
-                IRS · HMRC · FBR · BZSt · NTA · NTS · ATO · CRA · +30 more
+                IRS, HMRC, FBR, NTA, ATO, and CRA appear on some country notes. That is not a claim that every country was checked against a statute.
               </span>
             </div>
 

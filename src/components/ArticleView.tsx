@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import type { Article } from '../data/articlesData';
 import { ARTICLES } from '../data/articlesData';
 import { COUNTRIES } from '../data/taxData';
-import { SITE_CONFIG } from '../config';
+import { AFFILIATE_LINK_REL, SITE_CONFIG } from '../config';
+import { pathForView } from '../routes';
 import {
   Clock,
   Calendar,
@@ -21,7 +22,6 @@ import {
   Percent,
   TrendingUp,
   HelpCircle,
-  Mail,
   Sliders,
   CheckCircle2,
 } from 'lucide-react';
@@ -1159,8 +1159,7 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
 }) => {
   const [copied, setCopied] = useState<boolean>(false);
   const [openFaqs, setOpenFaqs] = useState<Record<number, boolean>>({});
-  const [newsletterEmail, setNewsletterEmail] = useState<string>('');
-  const [newsletterSuccess, setNewsletterSuccess] = useState<boolean>(false);
+  const articleUrl = `${SITE_CONFIG.siteUrl}${pathForView('article', article.slug)}`;
 
   // Toggle single FAQ
   const toggleFaq = (index: number) => {
@@ -1181,17 +1180,9 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
 
   // Copy article link
   const handleCopyLink = () => {
-    const url = `https://takehomeglobal.com/#/tax-guides/${article.slug}/`;
-    navigator.clipboard.writeText(url);
+    navigator.clipboard.writeText(articleUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  // Newsletter submit
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newsletterEmail || !newsletterEmail.includes('@')) return;
-    setNewsletterSuccess(true);
   };
 
   // Inject dynamic schema markup (Article + FAQPage + BreadcrumbList)
@@ -1210,7 +1201,7 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
       '@graph': [
         {
           '@type': 'Article',
-          '@id': `https://takehomeglobal.com/#/tax-guides/${article.slug}/#article`,
+          '@id': `${articleUrl}#article`,
           headline: article.title,
           description: article.description,
           datePublished: '2026-01-01',
@@ -1231,12 +1222,12 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
           },
           mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id': `https://takehomeglobal.com/#/tax-guides/${article.slug}/`,
+            '@id': articleUrl,
           },
         },
         {
           '@type': 'BreadcrumbList',
-          '@id': `https://takehomeglobal.com/#/tax-guides/${article.slug}/#breadcrumb`,
+          '@id': `${articleUrl}#breadcrumb`,
           itemListElement: [
             {
               '@type': 'ListItem',
@@ -1248,19 +1239,19 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
               '@type': 'ListItem',
               position: 2,
               name: 'Tax Guides',
-              item: 'https://takehomeglobal.com/#guides',
+              item: `${SITE_CONFIG.siteUrl}${pathForView('guides')}`,
             },
             {
               '@type': 'ListItem',
               position: 3,
               name: article.title,
-              item: `https://takehomeglobal.com/#/tax-guides/${article.slug}/`,
+              item: articleUrl,
             },
           ],
         },
         {
           '@type': 'FAQPage',
-          '@id': `https://takehomeglobal.com/#/tax-guides/${article.slug}/#faq`,
+          '@id': `${articleUrl}#faq`,
           mainEntity: article.faqs.map((faq) => ({
             '@type': 'Question',
             name: faq.question,
@@ -1279,7 +1270,7 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
       const el = document.getElementById(schemaId);
       if (el) el.remove();
     };
-  }, [article]);
+  }, [article, articleUrl]);
 
   // Lookup related countries
   const relatedCountryObjects = useMemo(() => {
@@ -1494,7 +1485,7 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
                 <a
                   href={SITE_CONFIG.affiliates.wise.destinationUrl}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel={AFFILIATE_LINK_REL}
                   className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs transition-all shadow-lg shadow-emerald-500/25 cursor-pointer w-full sm:w-auto"
                 >
                   <span>{SITE_CONFIG.affiliates.wise.ctaText}</span>
@@ -1575,44 +1566,11 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
         </section>
       )}
 
-      {/* Newsletter & Statutory Tax Alert Capture */}
       <section className="my-12 p-6 sm:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.08]">
-        <div className="max-w-xl">
-          <div className="flex items-center gap-2 text-indigo-400 text-xs font-bold uppercase tracking-wider mb-2">
-            <Mail className="w-4 h-4" />
-            <span>Stay Updated</span>
-          </div>
-          <h3 className="text-lg sm:text-xl font-black text-white tracking-tight mb-2">
-            Get 2026/2027 Statutory Tax Bracket & Treaty Alerts
-          </h3>
-          <p className="text-xs text-slate-400 mb-4 leading-relaxed">
-            We monitor IRS notices, HMRC budgets, BMF decrees, and international relocation treaties. Zero spam, unsubscribe anytime.
-          </p>
-
-          {newsletterSuccess ? (
-            <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              <span>You're subscribed! We'll notify you whenever statutory tax thresholds update.</span>
-            </div>
-          ) : (
-            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2">
-              <input
-                type="email"
-                required
-                placeholder="Enter your email address"
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                className="flex-grow px-4 py-2.5 rounded-xl bg-black/50 border border-white/[0.1] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-              />
-              <button
-                type="submit"
-                className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-all shadow-md shadow-indigo-600/30 cursor-pointer"
-              >
-                Subscribe
-              </button>
-            </form>
-          )}
-        </div>
+        <h3 className="text-lg font-bold text-white mb-2">Email alerts are not available</h3>
+        <p className="text-xs text-slate-400 leading-relaxed">
+          This page does not collect an address. Subscribing is not offered, and no confirmation is sent.
+        </p>
       </section>
 
       {/* Related Country Hubs Navigation */}
@@ -1623,10 +1581,14 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             {relatedCountryObjects.map((c) => (
-              <button
+              <a
                 key={c.id}
-                onClick={() => onNavigateCountry?.(c.id)}
-                className="p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] flex items-center justify-between text-left transition-all group cursor-pointer"
+                href={pathForView('country', c.id)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigateCountry?.(c.id);
+                }}
+                className="p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] flex items-center justify-between text-left transition-all group"
               >
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{c.flag}</span>
@@ -1640,7 +1602,7 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
                   </div>
                 </div>
                 <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all" />
-              </button>
+              </a>
             ))}
           </div>
         </section>
@@ -1654,10 +1616,14 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {relatedArticleObjects.map((ra) => (
-              <button
+              <a
                 key={ra.slug}
-                onClick={() => onSelectArticle?.(ra.slug)}
-                className="p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] text-left transition-all group cursor-pointer flex flex-col justify-between"
+                href={pathForView('article', ra.slug)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSelectArticle?.(ra.slug);
+                }}
+                className="p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] text-left transition-all group flex flex-col justify-between"
               >
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 block mb-1">
@@ -1671,7 +1637,7 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
                   <Clock className="w-3 h-3" />
                   <span>{ra.readTime}</span>
                 </span>
-              </button>
+              </a>
             ))}
           </div>
         </section>
@@ -1685,13 +1651,17 @@ export const ArticleView: React.FC<ArticleViewProps> = ({
         <p className="text-xs sm:text-sm text-slate-400 mb-6 max-w-lg mx-auto leading-relaxed">
           Enter your gross salary into our 100% free, private calculator to see side-by-side net pay, living cost ratios, and relocation tax freedom days.
         </p>
-        <button
-          onClick={onNavigateHome}
-          className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs transition-all shadow-lg shadow-indigo-600/30 cursor-pointer"
+        <a
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            onNavigateHome();
+          }}
+          className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs transition-all shadow-lg shadow-indigo-600/30"
         >
-          <span>Open Full 39-Country Tax Calculator</span>
+          <span>Open the calculator</span>
           <ArrowRight className="w-4 h-4" />
-        </button>
+        </a>
       </div>
     </article>
   );
