@@ -1,74 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { X, Check } from 'lucide-react';
-import { SITE_CONFIG } from '../config';
+import { configuredFormEndpoint } from '../forms';
 
 export const TopAnnouncementBar: React.FC = () => {
-  const [visible, setVisible] = useState(false);
+  const endpoint = configuredFormEndpoint();
   const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'sent' | 'failed'>('idle');
+  const [visible, setVisible] = useState(true);
 
-  useEffect(() => {
-    const dismissed = localStorage.getItem('tax_brief_banner_dismissed');
-    if (!dismissed) {
-      setVisible(true);
-    }
-  }, []);
-
-  const handleDismiss = () => {
-    setVisible(false);
-    localStorage.setItem('tax_brief_banner_dismissed', 'true');
-  };
+  if (!endpoint || !visible) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !email.includes('@')) return;
-
-    setSubmitted(true);
-
-    if (SITE_CONFIG.formspreeId) {
-      fetch(`https://formspree.io/f/${SITE_CONFIG.formspreeId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ email, source: 'top_announcement_bar', timestamp: new Date().toISOString() }),
-      }).catch((err) => console.warn('Formspree submit error:', err));
-    }
-
-    try {
-      // Store email in localStorage lead list
-      const existing = JSON.parse(localStorage.getItem('tax_subscribers') || '[]');
-      existing.push({ email, date: new Date().toISOString() });
-      localStorage.setItem('tax_subscribers', JSON.stringify(existing));
-    } catch {
-      // ignore
-    }
-
-    setTimeout(() => {
-      handleDismiss();
-    }, 2800);
+    if (!email.includes('@')) return;
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ email, source: 'top_announcement_bar' }),
+    })
+      .then((response) => {
+        setStatus(response.ok ? 'sent' : 'failed');
+      })
+      .catch(() => setStatus('failed'));
   };
 
-  if (!visible) return null;
-
   return (
-    <div className="bg-[#fffbeb] text-[#78350f] border-b border-[#fde68a] text-xs py-2 px-3 sm:px-6 relative z-50 transition-all duration-300">
+    <div className="bg-[#fffbeb] text-[#78350f] border-b border-[#fde68a] text-xs py-2 px-3 sm:px-6 relative z-50">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5">
-        {/* Banner Tagline */}
-        <div className="flex items-center gap-2 font-medium">
-          <span className="text-indigo-600 font-black">■</span>
-          <span className="font-bold text-[#92400e]">The Tax Brief</span>
-          <span className="hidden sm:inline text-slate-400">—</span>
-          <span className="text-[#92400e] text-[11px] sm:text-xs">
-            2026 Global Tax Arbitrage & Expat Playbook — 100% free download.
-          </span>
-        </div>
-
-        {/* Email form */}
+        <p className="font-medium text-[#92400e]">
+          Optional email note. This site does not attach a file to the request.
+        </p>
         <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-          {submitted ? (
-            <div className="flex items-center gap-1.5 text-emerald-800 font-semibold bg-emerald-100 px-3 py-1 rounded-md">
-              <Check className="w-3.5 h-3.5 text-emerald-600" />
-              <span>You're in! Check your inbox for the 2026 Playbook.</span>
-            </div>
+          {status === 'sent' ? (
+            <p className="flex items-center gap-1.5 text-emerald-900 font-semibold bg-emerald-100 px-3 py-1 rounded-md" role="status">
+              <Check className="w-3.5 h-3.5" />
+              <span>The address was accepted by the configured form endpoint. Delivery of a reply is not confirmed.</span>
+            </p>
           ) : (
             <form onSubmit={handleSubmit} className="flex items-center gap-1.5 w-full sm:w-auto">
               <input
@@ -77,22 +44,18 @@ export const TopAnnouncementBar: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
+                aria-label="Email address"
                 className="bg-white px-2.5 py-1 text-xs rounded border border-amber-300 text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500 w-full sm:w-48"
               />
-              <button
-                type="submit"
-                className="bg-[#d97706] hover:bg-[#b45309] text-white px-3 py-1 rounded font-bold text-xs transition-colors shrink-0 cursor-pointer shadow-sm"
-              >
-                Get it free →
+              <button type="submit" className="bg-[#92400e] text-white px-3 py-1 rounded font-bold text-xs shrink-0">
+                Send address
               </button>
             </form>
           )}
-
-          <button
-            onClick={handleDismiss}
-            className="text-amber-800 hover:text-amber-950 p-1 transition-colors cursor-pointer"
-            title="Dismiss announcement"
-          >
+          {status === 'failed' && (
+            <p role="status">The endpoint did not accept the address. Nothing was saved in this browser.</p>
+          )}
+          <button type="button" onClick={() => setVisible(false)} className="text-amber-950 p-1" aria-label="Dismiss announcement">
             <X className="w-4 h-4" />
           </button>
         </div>

@@ -15,6 +15,8 @@ export function parseRoute(rawPath: string): { view: string; param: string } {
     if (slug && ARTICLES.some((a) => a.slug === slug)) return { view: 'article', param: slug };
   } else if (clean === '/about') {
     return { view: 'about', param: '' };
+  } else if (clean === '/privacy') {
+    return { view: 'privacy', param: '' };
   } else if (clean === '/advertise') {
     return { view: 'advertise', param: '' };
   } else if (clean === '/contact') {
@@ -29,14 +31,14 @@ export function pathForView(view: string, param?: string): string {
   if (view === 'country' && param) return `/tax-calculator/${param}/`;
   if ((view === 'article' || view === 'guide') && param) return `/tax-guides/${param}/`;
   if (view === 'guides' || view === 'guides-index') return '/guides/';
-  if (view === 'about' || view === 'advertise' || view === 'contact') return `/${view}/`;
+  if (view === 'about' || view === 'privacy' || view === 'advertise' || view === 'contact') return `/${view}/`;
   return '/';
 }
 
 // Every route that gets its own prerendered HTML file.
 export function allRoutes(): string[] {
   return [
-    '/', '/about/', '/guides/', '/advertise/', '/contact/',
+    '/', '/about/', '/privacy/', '/guides/', '/advertise/', '/contact/',
     ...COUNTRIES.map((c) => pathForView('country', c.id)),
     ...ARTICLES.map((a) => pathForView('article', a.slug)),
   ];
@@ -63,7 +65,8 @@ export function headFor(path: string): { title: string; description: string } {
       description: `Guides on ${year} income tax: California vs Texas, USA vs UK, states with no income tax, the lowest-tax countries in Europe and more.`,
     };
   }
-  if (view === 'about') return { title: `About ${SITE_CONFIG.brandName}`, description: `Who runs ${SITE_CONFIG.brandName}, where the tax data comes from and how the calculator works.` };
+  if (view === 'about') return { title: `About ${SITE_CONFIG.brandName}`, description: `What ${SITE_CONFIG.brandName} does, how the estimates are built, and the affiliate disclosure. Not a filing source.` };
+  if (view === 'privacy') return { title: `Privacy — ${SITE_CONFIG.brandName} (draft)`, description: `Draft privacy note for ${SITE_CONFIG.brandName}: analytics consent, browser-side calculations, and forms that do not send. Legal review is not finished.` };
   if (view === 'advertise') return { title: `Advertise on ${SITE_CONFIG.brandName}`, description: `Advertising and partnership options on ${SITE_CONFIG.brandName}.` };
   if (view === 'contact') return { title: `Contact ${SITE_CONFIG.brandName}`, description: `Get in touch with ${SITE_CONFIG.brandName} about corrections, data questions or partnerships.` };
   return {
