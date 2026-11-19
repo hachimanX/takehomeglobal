@@ -4,9 +4,10 @@ import { SITE_CONFIG } from '../config';
 
 interface AboutPageProps {
   onNavigateHome: () => void;
+  onNavigate?: (view: string, param?: string) => void;
 }
 
-export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateHome }) => {
+export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateHome, onNavigate }) => {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-slate-300">
       {/* Back button */}
@@ -35,9 +36,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateHome }) => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
         <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
           <Database className="w-6 h-6 text-indigo-400 mb-3" />
-          <h2 className="text-base font-bold text-white mb-1.5">Official Sourcing</h2>
+          <h2 className="text-base font-bold text-white mb-1.5">References, not a filing source</h2>
           <p className="text-xs text-slate-400 leading-relaxed">
-            Every statutory bracket, deduction, and contribution ceiling is verified directly from official fiscal authorities including the IRS, HMRC, FBR, BZSt, NTA, and OECD.
+            Brackets are estimates for a simplified case. Where a country note names a public page, that page was used as a reference. Not every figure is an official extract.
           </p>
         </div>
 
@@ -45,7 +46,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateHome }) => {
           <Lock className="w-6 h-6 text-emerald-400 mb-3" />
           <h2 className="text-base font-bold text-white mb-1.5">Zero Data Storage</h2>
           <p className="text-xs text-slate-400 leading-relaxed">
-            100% client-side computing. We do not require accounts, log your entries, or transmit your salary inputs over the network.
+            Salary figures are calculated in this browser. There is no account. The calculator does not post your salary to a {SITE_CONFIG.brandName} server. An income figure can still appear in the page address.
           </p>
         </div>
 
@@ -69,13 +70,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateHome }) => {
             <strong className="text-slate-200">Gross Baseline Normalization:</strong> Your entered salary is pegged to your chosen base currency and converted to local statutory units using live daily ECB reference rates.
           </li>
           <li>
-            <strong className="text-slate-200">Standard Allowances & Slabs:</strong> Official personal allowances (e.g. US Standard Deduction of $16,100, UK Personal Allowance of £12,570, German Grundfreibetrag, Pakistan ₨600k slab, China ¥60k deduction) are subtracted prior to progressive bracket evaluation.
+            <strong className="text-slate-200">Standard Allowances & Slabs:</strong> Modelled allowances (for example a US standard deduction, the UK personal allowance, a German basic allowance, a Pakistan basic slab, and a China wage deduction) are subtracted before the brackets run. The figures in the model can differ from a filed return.
           </li>
           <li>
             <strong className="text-slate-200">Progressive Income Tax Calculation:</strong> Tax is applied incrementally to each income bracket chunk at the statutory marginal percentage.
           </li>
           <li>
-            <strong className="text-slate-200">Mandatory Social Insurance Deductions:</strong> State pension, health insurance, and unemployment contributions (e.g. US FICA/Medicare, UK National Insurance, German Sozialversicherung, EOBI) are computed using exact statutory caps and exemption thresholds.
+            <strong className="text-slate-200">Mandatory Social Insurance Deductions:</strong> Where the model includes them, employee pension, health, and unemployment contributions (for example US FICA and Medicare, UK National Insurance, German social insurance, and Pakistan EOBI) use the caps stored for that country. Some of those lines are estimates.
           </li>
           <li>
             <strong className="text-slate-200">Sub-National Regional Levies:</strong> Where selected, US state income taxes across all 50 states, Canadian provincial taxes, and Japanese local inhabitant taxes are calculated in tandem.
@@ -86,9 +87,29 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateHome }) => {
         </ol>
       </div>
 
+      <div id="affiliate-disclosure" className="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.06] text-xs leading-relaxed space-y-3 mb-8">
+        <h2 className="text-xl font-bold text-white">Affiliate disclosure</h2>
+        <p className="text-slate-300">{SITE_CONFIG.affiliateDisclosure}</p>
+        <p className="text-slate-400">
+          The Wise link is an invite link. It is marked sponsored and nofollow. The sentence above is the configured disclosure. It has not had a separate legal review.
+        </p>
+        <p>
+          <a
+            href="/privacy/"
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigate?.('privacy');
+            }}
+            className="text-indigo-400 hover:text-indigo-300 font-semibold"
+          >
+            Privacy draft
+          </a>
+        </p>
+      </div>
+
       {/* Educational & Legal Disclaimer */}
-      <div className="p-6 rounded-3xl bg-amber-500/5 border border-amber-500/20 text-xs leading-relaxed space-y-2">
-        <h3 className="font-bold text-amber-300 text-sm">Educational & Compliance Notice</h3>
+      <div id="disclaimer" className="p-6 rounded-3xl bg-amber-500/5 border border-amber-500/20 text-xs leading-relaxed space-y-2">
+        <h2 className="font-bold text-amber-300 text-sm">Educational notice</h2>
         <p className="text-slate-300">
           {SITE_CONFIG.legalDisclaimer}
         </p>

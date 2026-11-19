@@ -1,6 +1,6 @@
 import React from 'react';
 import { ExternalLink, Shield, Globe2 } from 'lucide-react';
-import { SITE_CONFIG } from '../config';
+import { AFFILIATE_LINK_REL, SITE_CONFIG } from '../config';
 
 export const AffiliateBanners: React.FC = () => {
   const p = {
@@ -69,7 +69,7 @@ export const AffiliateBanners: React.FC = () => {
             <a
               href={p.link}
               target="_blank"
-              rel="noopener noreferrer"
+              rel={AFFILIATE_LINK_REL}
               className="w-full md:w-auto py-3.5 px-6 rounded-xl text-xs font-bold text-black bg-emerald-400 hover:bg-emerald-300 flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-emerald-500/20"
             >
               <span>{p.cta}</span>

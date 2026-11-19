@@ -7,12 +7,12 @@ export const SITE_CONFIG = {
   tagline: 'Global Take-Home Pay & Income Tax Calculator (2026)',
   taxYear: '2026',
   author: 'TakeHomeGlobal Team',
+  // Not shown as a working inbox. No form delivers mail while the endpoints below are blank.
   supportEmail: 'hello@takehomeglobal.com',
-  
-  // Lead Capture & Newsletter Configuration
-  // Paste your Formspree Form ID (e.g., 'mqazbopx') or webhook URL here.
-  // When left blank, email submissions validate locally and trigger instant PDF download.
-  formspreeId: '', 
+
+  // Leave both blank until a real endpoint exists. Blank forms stay off:
+  // they must not report success or store addresses in the browser.
+  formspreeId: '',
   newsletterWebhookUrl: '',
 
   // Partner & Affiliate Links (Cloaked via /go/:slug)
@@ -47,3 +47,5 @@ export const SITE_CONFIG = {
   legalDisclaimer:
     'TakeHomeGlobal is an independent educational and financial literacy tool designed to help individuals understand global take-home pay and tax structures. It is not intended for illegal tax avoidance, evasion, or formal legal, accounting, or tax advice. Calculations are estimates based on standard statutory rates.',
 };
+
+export const AFFILIATE_LINK_REL = 'sponsored nofollow noopener noreferrer';

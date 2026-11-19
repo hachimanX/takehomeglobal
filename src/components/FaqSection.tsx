@@ -9,7 +9,7 @@ interface FaqItem {
 const FAQS: FaqItem[] = [
   {
     q: 'How accurate are the tax calculations on TakeHomeGlobal?',
-    a: 'Every tax rate, deduction threshold, and contribution schedule is verified against official government tax authorities (IRS for the US, HMRC for the UK, BMF for Germany, ATO for Australia, etc.) and updated for the 2026 fiscal year. While we provide reference-grade estimates using statutory marginal brackets and standard allowances, actual tax liabilities may vary based on itemized deductions, family status, and bilateral tax treaties. Always consult a qualified tax advisor for official filing.',
+    a: 'These are estimates for a simplified case: standard allowances and the employee contributions the model includes. Where a country note names a public page, that page was used as a reference. Not every figure is an official extract. Itemized deductions, family status, and treaties change the result. This is not a filing calculation. Check the tax authority that applies to you, or a qualified adviser, before you rely on a number.',
   },
   {
     q: 'Are employee Social Security and Healthcare contributions included?',
@@ -21,7 +21,7 @@ const FAQS: FaqItem[] = [
   },
   {
     q: 'Is any of my financial data stored, logged, or sent to a server?',
-    a: 'No. TakeHomeGlobal operates 100% client-side inside your web browser. There are no user accounts, no analytics tracking your salary numbers, and zero server communication regarding your income. Your numbers never leave your device.',
+    a: 'There is no account. Salary figures are calculated in the browser and are not posted to a TakeHomeGlobal server. Google Analytics 4, measurement ID G-E6GZRP9KB0, loads only after you accept analytics. You can decline, or withdraw later, on the privacy page. That tag is for page measurement. It is not given a copy of the salary field. Exchange rates are requested from the public Frankfurter service. If an income figure is in the page address, it is visible in the address bar.',
   },
   {
     q: 'What is Real Purchasing Power and how is it calculated?',
