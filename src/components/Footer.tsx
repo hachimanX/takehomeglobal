@@ -1,6 +1,7 @@
 import React from 'react';
 import { Globe, ExternalLink } from 'lucide-react';
-import { SITE_CONFIG } from '../config';
+import { AFFILIATE_LINK_REL, SITE_CONFIG } from '../config';
+import { AnalyticsConsentControl } from './ConsentBanner';
 import { COUNTRIES } from '../data/taxData';
 import { ARTICLES } from '../data/articlesData';
 import { pathForView } from '../routes';
@@ -13,6 +14,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const go = (view: string, param?: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     onNavigate(view, param);
+  };
+  const goAbout = (hash: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    onNavigate('about');
+    window.history.replaceState({}, '', `/about/${hash}`);
   };
   return (
     <footer className="border-t border-white/[0.08] bg-[#07080d] text-slate-400 text-xs pt-16 pb-12 mt-20">
@@ -111,14 +117,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('home')} className="hover:text-white transition-colors cursor-pointer">
-                  Dubai vs London Relocation
-                </button>
+                <a href={pathForView('country', 'uae')} onClick={go('country', 'uae')} className="hover:text-white transition-colors">
+                  UAE calculator
+                </a>
               </li>
               <li>
-                <button onClick={() => onNavigate('home')} className="hover:text-white transition-colors cursor-pointer">
-                  Singapore vs Switzerland
-                </button>
+                <a href={pathForView('country', 'singapore')} onClick={go('country', 'singapore')} className="hover:text-white transition-colors">
+                  Singapore calculator
+                </a>
               </li>
             </ul>
           </div>
@@ -149,7 +155,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <a
                   href={SITE_CONFIG.affiliates.wise.destinationUrl}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel={AFFILIATE_LINK_REL}
                   className="text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-1"
                 >
                   <span>International Banking (Wise)</span>
@@ -166,29 +172,29 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </h4>
             <ul className="space-y-2 text-xs text-slate-400">
               <li>
-                <button onClick={() => onNavigate('about')} className="hover:text-white transition-colors cursor-pointer">
-                  About Us & Methodology
-                </button>
+                <a href="/about/" onClick={go('about')} className="hover:text-white transition-colors">
+                  About and methodology
+                </a>
               </li>
               <li>
-                <button onClick={() => onNavigate('advertise')} className="text-amber-400 hover:text-amber-300 font-semibold transition-colors cursor-pointer">
-                  Advertise With Us
-                </button>
+                <a href="/advertise/" onClick={go('advertise')} className="text-amber-400 hover:text-amber-300 font-semibold transition-colors">
+                  Advertise
+                </a>
               </li>
               <li>
-                <button onClick={() => onNavigate('contact')} className="hover:text-white transition-colors cursor-pointer">
-                  Contact & CPA Partner Directory
-                </button>
+                <a href="/contact/" onClick={go('contact')} className="hover:text-white transition-colors">
+                  Contact
+                </a>
               </li>
               <li>
-                <button onClick={() => onNavigate('contact')} className="hover:text-white transition-colors cursor-pointer">
-                  Submit Statutory Correction
-                </button>
+                <a href="/privacy/" onClick={go('privacy')} className="hover:text-white transition-colors">
+                  Privacy
+                </a>
               </li>
               <li>
-                <button onClick={() => onNavigate('about')} className="hover:text-white transition-colors cursor-pointer">
-                  Affiliate Disclosure
-                </button>
+                <a href="/about/#affiliate-disclosure" onClick={goAbout('#affiliate-disclosure')} className="hover:text-white transition-colors">
+                  Affiliate disclosure
+                </a>
               </li>
               <li>
                 <a href="/ai-instructions" className="hover:text-emerald-400 transition-colors">
@@ -216,7 +222,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </span>
             <span className="flex items-center gap-1.5 text-indigo-300">
               <span>📈</span>
-              <span>Statutory 2026 tax rates</span>
+              <span>2026 tax-year estimates</span>
             </span>
           </div>
 
@@ -267,18 +273,21 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         {/* Bottom Legal Copyright */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400 pt-2">
           <div>
-            &copy; {new Date().getFullYear()} {SITE_CONFIG.brandName}. All calculations execute client-side. Zero personal or income data is stored.
+            &copy; {new Date().getFullYear()} {SITE_CONFIG.brandName}. Salary figures are calculated in the browser. Analytics loads only after consent.
           </div>
-          <div className="flex items-center gap-4">
-            <button onClick={() => onNavigate('about')} className="hover:text-white transition-colors cursor-pointer">
-              Disclaimer
-            </button>
-            <button onClick={() => onNavigate('about')} className="hover:text-white transition-colors cursor-pointer">
-              Privacy Policy
-            </button>
-            <button onClick={() => onNavigate('about')} className="hover:text-white transition-colors cursor-pointer">
-              Affiliate Disclosure
-            </button>
+          <div className="flex flex-col items-start sm:items-end gap-3">
+            <div className="flex flex-wrap items-center gap-4">
+              <a href="/about/#disclaimer" onClick={goAbout('#disclaimer')} className="hover:text-white transition-colors">
+                Disclaimer
+              </a>
+              <a href="/privacy/" onClick={go('privacy')} className="hover:text-white transition-colors">
+                Privacy
+              </a>
+              <a href="/about/#affiliate-disclosure" onClick={goAbout('#affiliate-disclosure')} className="hover:text-white transition-colors">
+                Affiliate disclosure
+              </a>
+            </div>
+            <AnalyticsConsentControl />
           </div>
         </div>
       </div>

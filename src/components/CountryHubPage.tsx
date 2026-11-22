@@ -99,7 +99,7 @@ export const CountryHubPage: React.FC<CountryHubPageProps> = ({
               </span>
             </div>
             <p className="text-xs sm:text-sm text-slate-400">
-              Official statutory brackets, social contributions, and take-home pay estimator ({country.currency}).
+              Estimated brackets, modelled contributions, and take-home pay ({country.currency}).
             </p>
           </div>
         </div>
@@ -111,7 +111,7 @@ export const CountryHubPage: React.FC<CountryHubPageProps> = ({
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-300 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] rounded-xl transition-all whitespace-nowrap"
           >
-            <span>Official Tax Source</span>
+            <span>Public reference</span>
             <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
           </a>
         )}

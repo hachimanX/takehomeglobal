@@ -953,11 +953,14 @@ export const COUNTRIES: CountryInfo[] = [
     currency: 'INR',
     flag: '🇮🇳',
     costOfLivingAnnualUSD: 5000,
-    // Sources, checked 2026-10-16. New regime, resident individual under 60, FY 2026-27.
-    // Slabs, ₹75,000 standard deduction, s.87A rebate up to ₹60,000 for income to ₹12 lakh, surcharge
-    //   10/15/25% above ₹50 lakh / ₹1 crore / ₹2 crore: https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/itr-2/itr-2-faqs
-    //   and https://www.incometaxindia.gov.in/w/tax-rates%E2%80%8B
-    // Budget 2026-27 made no change to personal rates (PIB budget summary, Feb 2026).
+    // New regime, resident individual under 60, FY 2026-27 / tax year 2026-27.
+    // Finance Bill 2026 memorandum (Income Tax Department) says the section 115BAC(1A) / section 202
+    // slabs are unchanged and that health and education cess is 4% with no marginal relief on the cess:
+    // https://www.incometaxindia.gov.in/documents/81799/11848482/memo-2026.pdf
+    // Salary checks (standard deduction ₹75,000, rebate through taxable ₹12 lakh, then 4% cess;
+    // employee EPF is not part of these tax figures): gross ₹12,00,000 and ₹12,75,000 → ₹0;
+    // ₹12,85,000 → ₹10,400; ₹12,90,000 → ₹15,600; ₹13,50,000 → ₹74,100.
+    // The previous tax-rates path returned 404 on 2026-11-07 and included a zero-width space.
     // EPF: 12% of basic pay up to the ₹15,000/month wage ceiling; gross is treated as basic pay.
     // Not modelled: marginal relief on the surcharge.
     federalBrackets: [
@@ -980,7 +983,7 @@ export const COUNTRIES: CountryInfo[] = [
       { name: 'Surcharge (25% above ₹2 crore)', type: 'surcharge', trigger: 20000000, rate: 0.10, isPercentageOfTax: true, triggerBasis: 'income' },
       { name: 'Health & Education Cess (4%)', type: 'cess', trigger: 0, rate: 0.04, isPercentageOfTax: true, compound: true }
     ],
-    officialSource: 'https://www.incometaxindia.gov.in/w/tax-rates%E2%80%8B',
+    officialSource: 'https://www.incometaxindia.gov.in/documents/81799/11848482/memo-2026.pdf',
     notes: 'New Tax Regime (FY 2026-27): ₹75,000 standard deduction, no tax up to ₹12 lakh after the s.87A rebate, surcharge, 4% cess.'
   },
   {

@@ -2,26 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>TakeHomeGlobal — Redirecting...</title>
-    <script>
-      // Single Page Application redirect for GitHub Pages custom domains
-      // Preserves deep links, paths, search params, and hash fragments
-      (function() {
-        var path = window.location.pathname;
-        var search = window.location.search;
-        var hash = window.location.hash;
-        
-        // Remove trailing slash if present (except root)
-        if (path.length > 1 && path.endsWith('/')) {
-          path = path.slice(0, -1);
-        }
-        
-        // Redirect to hash route
-        window.location.replace('/#' + path + (search ? '?' + search.slice(1) : '') + hash);
-      })();
-    </script>
+    <title>Page not available — TakeHomeGlobal</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
-  <body style="background-color:#090a0f;color:#94a3b8;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;">
-    <p>Loading TakeHomeGlobal...</p>
+  <body style="background-color:#090a0f;color:#cbd5e1;font-family:system-ui,-apple-system,sans-serif;margin:0;">
+    <main style="max-width:40rem;margin:0 auto;padding:4rem 1.25rem;line-height:1.5;">
+      <h1 style="color:#fff;font-size:1.75rem;">This page is not available</h1>
+      <p>That address is not a page on this site. It is not redirected to a different URL.</p>
+      <ul>
+        <li><a href="/" style="color:#818cf8;">Calculator</a></li>
+        <li><a href="/tax-calculator/uk/" style="color:#818cf8;">United Kingdom calculator</a></li>
+        <li><a href="/tax-calculator/pakistan/" style="color:#818cf8;">Pakistan calculator</a></li>
+        <li><a href="/tax-calculator/usa/" style="color:#818cf8;">United States calculator</a></li>
+        <li><a href="/guides/" style="color:#818cf8;">Tax guides</a></li>
+        <li><a href="/about/" style="color:#818cf8;">About</a></li>
+        <li><a href="/privacy/" style="color:#818cf8;">Privacy draft</a></li>
+      </ul>
+    </main>
   </body>
 </html>
